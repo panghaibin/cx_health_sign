@@ -1,3 +1,4 @@
+*.sess
 cache/
 # Pycharm
 .idea/

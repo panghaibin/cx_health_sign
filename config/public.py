@@ -3,7 +3,7 @@ import re
 import json
 import random
 import datetime
-import requests
+from session import Session
 
 
 class Report(object):
@@ -18,17 +18,11 @@ class Report(object):
         :params school_id: 学校代码，使用学号登录才需填写
         """
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/84.0.4147.125 Safari/537.36',
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-            'X-Requested-With': 'XMLHttpRequest',
-        }
         self._username = username
         self._password = password
         self._school_id = school_id
-        self._session = requests.session()
-        self._session.headers = headers
+
+        self._session = Session(self._username).load_session()
 
         self._form_id = ''
         self._enc = ''
@@ -52,16 +46,30 @@ class Report(object):
         temperature = str(round(random.uniform(36.3, 36.7), 1))
         return temperature
 
-    def _login(self):
+    def _check_session(self):
+        """
+        检测 session 是否仍有效
+        """
+        check_url = 'http://i.mooc.chaoxing.com/space/'
+        resp = self._session.get(check_url)
+        if '用户登录' in resp.text:
+            return False
+        else:
+            return True
+
+    def _login(self) -> bool:
         """
         登录: 支持手机号、邮箱或学号登录
         """
+        if self._check_session():
+            return True
+
         login_api = "https://passport2.chaoxing.com/api/login"
         params = {
             "name": self._username,
             "pwd": self._password,
             "verify": "0",
-            "schoolid": self._school_id if self._school_id else ""
+            "schoolid": self._school_id
         }
         resp = self._session.get(login_api, params=params)
 
@@ -73,7 +81,9 @@ class Report(object):
         if not data['result']:
             self._result = '%s登录失败' % self._username
             raise Exception(self._result)
-        return data
+
+        Session(self._username, self._session).save_session()
+        return True
 
     def _get_last_form_data(self) -> dict:
         """
