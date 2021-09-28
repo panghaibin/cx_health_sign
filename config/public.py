@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 import re
 import json
+import random
+import datetime
 import requests
 
 
@@ -37,9 +39,22 @@ class Report(object):
         self._check_code = ''
         self._today_report_result = {}
 
+    @staticmethod
+    def _get_today():
+        t = datetime.datetime.utcnow()
+        # 确保获取的是东八区时区时间
+        t += datetime.timedelta(hours=8)
+        today = t.strftime("%Y-%m-%d")
+        return today
+
+    @staticmethod
+    def _random_temperature():
+        temperature = str(round(random.uniform(36.3, 36.7), 1))
+        return temperature
+
     def _login(self):
         """
-        登录: 支持手机和邮箱登录
+        登录: 支持手机号、邮箱或学号登录
         """
         login_api = "https://passport2.chaoxing.com/api/login"
         params = {
@@ -51,11 +66,12 @@ class Report(object):
         resp = self._session.get(login_api, params=params)
 
         if resp.status_code == 403:
-            raise Exception("403，登录请求被拒绝")
+            self._result = "%s登录得到403，登录请求被拒绝" % self._username
+            raise Exception(self._result)
 
         data = json.loads(resp.text)
         if not data['result']:
-            self._result = '登录失败'
+            self._result = '%s登录失败' % self._username
             raise Exception(self._result)
         return data
 
@@ -74,7 +90,7 @@ class Report(object):
         resp = self._session.get(api, params=params)
         raw_data = json.loads(resp.text)
         if not raw_data['data']:
-            self._result = '获取上次提交数据为空，可能为今日已提交'
+            self._result = '%s获取上次%s提交数据为空，可能为今日已提交' % (self._username, self._reporter_name)
             raise Exception(self._result)
         form_data = raw_data['data']['formsUser']['formData']
         d = {
@@ -110,7 +126,7 @@ class Report(object):
             self._check_code = code[0]
             return self._check_code
         else:
-            self._result = "校验码获取失败"
+            self._result = "%s获取%s校验码失败" % (self._username, self._reporter_name)
             raise Exception(self._result)
 
     def _today_report(self):
@@ -140,4 +156,7 @@ class Report(object):
         report_result = self._today_report()
         if report_result['success']:
             self._result = '%s填报%s(id=%s)成功' % (self._username, self._reporter_name, self._form_id)
+        else:
+            self._result = '%s填报%s(id=%s)失败' % (self._username, self._reporter_name, self._form_id)
+            self._result += '，返回报错：%s' % report_result['msg']
         return self._result
