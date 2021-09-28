@@ -34,14 +34,6 @@ class _Report(object):
         self._today_report_result = {}
 
     @staticmethod
-    def _get_today():
-        t = datetime.datetime.utcnow()
-        # 确保获取的是东八区时区时间
-        t += datetime.timedelta(hours=8)
-        today = t.strftime("%Y-%m-%d")
-        return today
-
-    @staticmethod
     def _random_temperature():
         temperature = str(round(random.uniform(36.3, 36.7), 1))
         return temperature
@@ -170,3 +162,37 @@ class _Report(object):
             self._result = '%s填报%s(id=%s)失败' % (self._username, self._reporter_name, self._form_id)
             self._result += '，返回报错：%s' % report_result['msg']
         return self._result
+
+
+class Time(object):
+    """
+    时间相关函数
+    用于填报的时间判断
+    """
+    def __init__(self):
+        self.now_time = self._get_now_time()
+        self.today = self._get_today()
+        self.hour = self._get_hour()
+        self.minute = self._get_minute()
+
+        self.int_hour = int(self.hour)
+        self.int_minute = int(self.minute)
+
+    def _get_now_time(self):
+        t = datetime.datetime.utcnow()
+        # 确保获取的是东八区时区时间
+        t += datetime.timedelta(hours=8)
+        self.now_time = t
+        return self.now_time
+
+    def _get_today(self):
+        today = self.now_time.strftime("%Y-%m-%d")
+        return today
+
+    def _get_hour(self):
+        hour = self.now_time.strftime("%H")
+        return hour
+
+    def _get_minute(self):
+        minute = self.now_time.strftime("%M")
+        return minute

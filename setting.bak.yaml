@@ -1,0 +1,13 @@
+# 0: 未设置
+# 1: 方糖气球 https://sct.ftqq.com/
+# 2: 推送加 https://www.pushplus.plus/
+send_api: 0
+send_key: ""
+users:
+  "username_here1":
+    - "password_here"
+#    此处填写需要报送的配置
+    - "test"
+  "username_here2":
+    - "password_here"
+    - "nnnu"
