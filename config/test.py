@@ -1,15 +1,15 @@
 # -*- coding: utf8 -*-
-from config.public import Report
+from config import _Report
 
 
-class TestReport(Report):
+class TestReport(_Report):
     """
     这个表单是在网上随便找的，不限填报次数、时间
     拿来用作测试用
     随时可能失效
     """
     def __init__(self, username, password, school_id=''):
-        Report.__init__(self, username, password, school_id)
+        _Report.__init__(self, username, password, school_id)
         self._form_id = '13243'
         self._enc = '3a9416c86432c5f667f2b23a88a0123a'
         self._reporter_name = '测试用填报表单'
