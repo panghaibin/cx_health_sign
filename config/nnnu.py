@@ -52,7 +52,10 @@ class NNNU1HealthReport(_NNNU0HealthReport):
         self._enc = '5affca1a747445b8d3ec9de92612ecae'
         self._reporter_name = 'NNNU早检表单'
 
-        # TODO: 待抓包完善
+        self._day_id = 21
+        self._temperature_id = 15
+        self._options_ids = [22, 23, 13]
+        self._hasAuthority_ids = [8, 9, 10, 26, 27]
 
 
 class NNNU2HealthReport(_NNNU0HealthReport):
