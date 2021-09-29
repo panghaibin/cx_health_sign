@@ -8,10 +8,9 @@ class Setting(object):
         self._abs_path = os.path.split(os.path.realpath(__file__))[0]
         self.setting_path = self._abs_path + "/setting.yaml"
         self._check_setting()
-        self.users = {}
+        self._check_users()
         self.user_list = []
-        self.api_type = self.setting.get('send_api', 0)
-        self.api_key = self.setting.get('send_key', '')
+        self.global_api = self.setting.get('global_send')
 
     def _check_setting(self):
         if not os.path.exists(self.setting_path):
@@ -26,20 +25,24 @@ class Setting(object):
     def _check_users(self):
         users = self.setting.get('users', [])
         for user in list(users.keys()):
-            if 'username_here' in user:
+            if 'username_' in user:
                 users.pop(user)
-        self.users = users
-        return self.users
+        self._users = users
+        return self._users
 
-    def get_users(self, config=None):
+    def get_users(self, post_type=None):
         self._check_users()
-        users = self.users
+        users = self._users
         user_list = []
         for username in list(users.keys()):
-            if users[username][1] == config or config is None:
+            if users[username]['post_type'] == post_type or post_type is None:
                 user = {
                     'username': username,
-                    'password': users[username][0]
+                    'password': users[username]['password'],
+                    'school_id': users[username].get('school_id', ''),
+                    'post_type': users[username]['post_type'],
+                    'api_type': users[username]['api_type'],
+                    'api_key': users[username]['api_key']
                 }
                 user_list.append(user)
         self.user_list = user_list

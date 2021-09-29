@@ -1,13 +1,28 @@
-# 0: 未设置
-# 1: 方糖气球 https://sct.ftqq.com/
-# 2: 推送加 https://www.pushplus.plus/
-send_api: 0
-send_key: ""
+# 全局消息发送，所有上报的信息都会发送到此接受者
+global_send:
+#    消息发送 api 设置
+#    0: 未设置
+#    1: 方糖气球 https://sct.ftqq.com/
+#    2: 推送加 https://www.pushplus.plus/
+  api_type: 2
+  api_key: "3ec73b3c4ffb496a8ba59b7d21f96859"
+
+
 users:
-  "username_here1":
-    - "password_here"
-#    此处填写需要报送的配置
-    - "test"
-  "username_here2":
-    - "password_here"
-    - "nnnu"
+  "username_1":
+    passwprd: "password_here"
+#    学校 id ，选填
+    school_id: ''
+#    此处填写需要报送的配置类型 目前可选 default / nnnu / test
+    post_type: "default"
+#    消息发送设置同上，此为个人推送
+    api_id: 0
+    api_key: ''
+
+#  多用户采用相同的配置方法
+  "username_2":
+    passwprd: "password_here"
+    school_id: ''
+    post_type: "nnnu"
+    api_id: 1
+    api_key: ''

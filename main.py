@@ -1,7 +1,9 @@
 # -*- coding: utf8 -*-
 import json
+import random
 import requests
 from setting import Setting
+from config import Time
 from config.default import DefaultHealthReport
 from config.nnnu import NNNUHealthReport
 from config.test import TestReport
@@ -14,32 +16,41 @@ class MainHandle(object):
 
     def __init__(self):
         setting = Setting()
-        self._default_user = setting.get_users(config='default')
-        self._nnnu_user = setting.get_users(config='nnnu')
-        self._test_user = setting.get_users(config='test')
-        self.results = []
+        self._reporters = {
+            'test': TestReport,
+            'default': DefaultHealthReport,
+            'nnnu': NNNUHealthReport,
+        }
+        self._users = setting.get_users(post_type=None)
+        self._global_api = setting.global_api
+        self.report_results = []
+        self.send_results = []
 
-        for user in self._default_user:
+        self.report_all()
+
+        self.send_all_result = ''
+        self.send_all()
+
+    def report_all(self):
+        for user in self._users:
             try:
-                r = DefaultHealthReport(user['username'], user['password'])
+                post_type = user['post_type']
+                r = self._reporters[post_type](user['username'], user['password'], user['school_id'])
                 t = r.report()
-                self.results.append(t)
+                self.report_results.append(t)
             except Exception as e:
-                self.results.append(str(e))
-        for user in self._nnnu_user:
-            try:
-                r = NNNUHealthReport(user['username'], user['password'])
-                t = r.report()
-                self.results.append(t)
-            except Exception as e:
-                self.results.append(str(e))
-        for user in self._test_user:
-            try:
-                r = TestReport(user['username'], user['password'])
-                t = r.report()
-                self.results.append(t)
-            except Exception as e:
-                self.results.append(str(e))
+                self.report_results.append(str(e))
+            send = SendMsg(user, result=self.report_results[-1])
+            self.send_results.append(send.send_result)
+
+    def send_all(self):
+        api = {
+            'api_type': self._global_api.get('api_type'),
+            'api_key': self._global_api.get('api_key')
+        }
+        send = SendMsg(api, result_list=self.report_results)
+        self.send_all_result = send.send_result
+        return self.send_all_result
 
 
 class SendMsg(object):
@@ -47,33 +58,41 @@ class SendMsg(object):
     消息发送函数
     """
 
-    def __init__(self, results):
-        if not results:
-            raise Exception('消息内容不能为空')
-        self.results = results
-        self._api_types = ['未设置', '方糖气球', '推送加']
-        setting = Setting()
-        self.api_type = setting.api_type
-        self.api_key = setting.api_key
+    def __init__(self, user_api, result=None, result_list=None):
+        if result is None and result_list is None:
+            raise Exception('必须传入 result 或 result_list')
+
+        self._api_types = ('未设置', '方糖气球', '推送加')
+        self.api_type = user_api['api_type']
+        self.api_key = user_api['api_key']
         if self.api_type not in range(1, len(self._api_types)) or self.api_key == '':
             raise Exception('未配置消息发送类型及 key')
         self.api_type_name = self._api_types[self.api_type]
         self.send_result = {}
         self.send_result_bool = None
-        self.desp = ''
-        for i in self.results:
-            self.desp += i + "\n\n"
+
+        self.result_list = result_list
+        self.title = result if result is not None else result_list[0]
+        self.desp = Time().now_time.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
+        self.desp += result if result is not None else "\n\n".join(result_list)
+        # 添加随机字符以确保提交成功
+        self.desp += "\n\n" + str(random.randint(0, 100000))
+
+        # 这里要写在最后，确保 title resp 已初始化
+        self._send_api = (None, self.server_chan(), self.push_plus())
+
+        self.send_msg()
 
     def server_chan(self):
         url = "http://sctapi.ftqq.com/%s.send" % self.api_key
         data = {
-            'text': self.results[0],
+            'text': self.title,
             'desp': self.desp
         }
         text = requests.post(url, data=data).text
-        result = json.loads(text)
-        self.send_result = result
-        if result['data']['error'] == 'SUCCESS':
+        send_result = json.loads(text)
+        self.send_result = send_result
+        if send_result['code'] == 0:
             return True
         else:
             return False
@@ -82,33 +101,28 @@ class SendMsg(object):
         url = "http://www.pushplus.plus/send"
         data = {
             'token': self.api_key,
-            'title': self.results[0],
+            'title': self.title,
             'content': self.desp,
             'template': 'markdown'
         }
         headers = {'Content-Type': 'application/json'}
         body = json.dumps(data).encode(encoding='utf-8')
         text = requests.post(url, data=body, headers=headers).text
-        result = json.loads(text)
-        self.send_result = result
-        if result['code'] == 200:
+        send_result = json.loads(text)
+        self.send_result = send_result
+        if send_result['code'] == 200:
             return True
         else:
             return False
 
     def send_msg(self):
-        result_bool = False
-        if self.api_type == 1:
-            result_bool = self.server_chan()
-        elif self.api_type == 2:
-            result_bool = self.push_plus()
+        result_bool = self._send_api[self.api_type]
         self.send_result_bool = result_bool
         return self.send_result_bool
 
 
 if __name__ == '__main__':
     main = MainHandle()
-    print(main.results)
-    send = SendMsg(main.results)
-    send.send_msg()
-    print(send.send_result)
+    print(main.report_results)
+    print(main.send_results)
+    print(main.send_all_result)
