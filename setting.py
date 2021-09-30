@@ -17,10 +17,9 @@ class Setting(object):
 
     def _load_setting(self):
         if not os.path.exists(self.setting_path):
-            print('未找到配置文件')
-            print('请创建 setting.yaml 文件')
-            print('格式参考 setting.bak.yaml')
-            raise Exception('配置文件不存在')
+            with open(self.setting_path, 'w') as f:
+                config = dict(global_send={}, users={})
+                yaml.dump(config, f)
         with open(self.setting_path, 'r', encoding='utf-8') as f:
             setting = yaml.load(f, Loader=yaml.FullLoader)
         self.setting = setting
