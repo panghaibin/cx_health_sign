@@ -111,6 +111,7 @@ class MainHandle(object):
         add_result = self.setting.add_user(username, password, post_type, school_id, api_type, api_key)
         if add_result:
             print('用户添加成功')
+            self._users = self.setting.get_users(post_type=None)
         else:
             print('用户添加失败')
         return add_result
