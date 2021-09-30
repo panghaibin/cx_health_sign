@@ -12,7 +12,8 @@ class Setting(object):
         self._users: dict = {}
         self._check_users()
         self.user_list: list = []
-        self.global_api: dict = self.setting.get('global_send', {})
+        global_api: dict = self.setting.get('global_send', {})
+        self.global_api: dict = {} if global_api is None else global_api
 
     def _load_setting(self):
         if not os.path.exists(self.setting_path):
@@ -30,7 +31,8 @@ class Setting(object):
             return True
 
     def _check_users(self):
-        users = self.setting.get('users', {})
+        users = self.setting.get('users')
+        users = {} if users is None else users
         save_requite = False
         for user in list(users.keys()):
             if 'username_' in user:
@@ -52,14 +54,14 @@ class Setting(object):
                     'password': users[username]['password'],
                     'post_type': users[username]['post_type'],
                     'school_id': users[username].get('school_id', ''),
-                    'api_type': users[username].get('api_type', ''),
+                    'api_type': users[username].get('api_type', 0),
                     'api_key': users[username].get('api_key', '')
                 }
                 user_list.append(user)
         self.user_list = user_list
         return self.user_list
 
-    def add_user(self, username, password, post_type, school_id='', api_type='', api_key='') -> bool:
+    def add_user(self, username, password, post_type, school_id='', api_type=0, api_key='') -> bool:
         user_info = dict(
             password=password, post_type=post_type, school_id=school_id,
             api_type=api_type, api_key=api_key
@@ -67,4 +69,8 @@ class Setting(object):
         user = {username: user_info}
         self._users.update(user)
         self.setting['users'] = self._users
-        return self._save_setting()
+        save_result = self._save_setting()
+        if save_result:
+            self._load_setting()
+            self._check_users()
+        return save_result
