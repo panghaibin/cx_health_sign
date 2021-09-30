@@ -23,13 +23,16 @@ class MainHandle(object):
         }
         self._users = setting.get_users(post_type=None)
         self._global_api = setting.global_api
-        self.report_results = []
-        self.send_results = []
+        # 健康报告结果，多用户存储在一个数组
+        self.report_results: list = []
+        # 消息发送结果
+        self.send_results: list = []
 
         self.report_all()
 
-        self.send_all_result = ''
-        self.send_all()
+        # 全局消息发送结果
+        self.global_send_result: str = ''
+        self.global_send()
 
     def report_all(self):
         for user in self._users:
@@ -40,17 +43,23 @@ class MainHandle(object):
                 self.report_results.append(t)
             except Exception as e:
                 self.report_results.append(str(e))
-            send = SendMsg(user, result=self.report_results[-1])
-            self.send_results.append(send.send_result)
+            if user['api_type'] not in ['', 0]:
+                send = SendMsg(user, result=self.report_results[-1])
+                self.send_results.append(send.send_result)
+            else:
+                self.send_results.append('')
 
-    def send_all(self):
+    def global_send(self) -> str:
         api = {
-            'api_type': self._global_api.get('api_type'),
-            'api_key': self._global_api.get('api_key')
+            'api_type': self._global_api.get('api_type', ''),
+            'api_key': self._global_api.get('api_key', '')
         }
-        send = SendMsg(api, result_list=self.report_results)
-        self.send_all_result = send.send_result
-        return self.send_all_result
+        if api['api_type'] not in ['', 0]:
+            send = SendMsg(api, result_list=self.report_results)
+            self.global_send_result = send.send_result
+        else:
+            self.global_send_result = '未指定全局消息推送'
+        return self.global_send_result
 
 
 class SendMsg(object):
@@ -58,22 +67,22 @@ class SendMsg(object):
     消息发送函数
     """
 
-    def __init__(self, user_api, result=None, result_list=None):
+    def __init__(self, user_api, result: str = None, result_list: list = None):
         if result is None and result_list is None:
             raise Exception('必须传入 result 或 result_list')
 
         self._api_types = ('未设置', '方糖气球', '推送加')
         self.api_type = user_api['api_type']
         self.api_key = user_api['api_key']
-        if self.api_type not in range(1, len(self._api_types)) or self.api_key == '':
-            raise Exception('未配置消息发送类型及 key')
+        if self.api_type not in range(1, len(self._api_types)):
+            raise Exception('未正确配置消息发送类型')
         self.api_type_name = self._api_types[self.api_type]
-        self.send_result = {}
-        self.send_result_bool = None
+        self.send_result: dict = {}
+        self.send_result_bool: bool = False
 
         self.result_list = result_list
         self.title = result if result is not None else result_list[0]
-        self.desp = Time().now_time.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
+        self.desp: str = Time().now_time.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
         self.desp += result if result is not None else "\n\n".join(result_list)
         # 添加随机字符以确保提交成功
         self.desp += "\n\n" + str(random.randint(0, 100000))
@@ -83,7 +92,7 @@ class SendMsg(object):
 
         self.send_msg()
 
-    def server_chan(self):
+    def server_chan(self) -> bool:
         url = "http://sctapi.ftqq.com/%s.send" % self.api_key
         data = {
             'text': self.title,
@@ -97,7 +106,7 @@ class SendMsg(object):
         else:
             return False
 
-    def push_plus(self):
+    def push_plus(self) -> bool:
         url = "http://www.pushplus.plus/send"
         data = {
             'token': self.api_key,
@@ -115,7 +124,7 @@ class SendMsg(object):
         else:
             return False
 
-    def send_msg(self):
+    def send_msg(self) -> bool:
         result_bool = self._send_api[self.api_type]
         self.send_result_bool = result_bool
         return self.send_result_bool
@@ -123,6 +132,9 @@ class SendMsg(object):
 
 if __name__ == '__main__':
     main = MainHandle()
+    # 打印每个用户健康报告填报结果
     print(main.report_results)
+    # 打印每个用户的消息发送结果
     print(main.send_results)
-    print(main.send_all_result)
+    # 打印全局消息发送结果
+    print(main.global_send_result)

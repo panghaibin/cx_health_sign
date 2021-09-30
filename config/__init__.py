@@ -34,11 +34,11 @@ class _Report(object):
         self._today_report_result = {}
 
     @staticmethod
-    def _random_temperature():
+    def _random_temperature() -> str:
         temperature = str(round(random.uniform(36.3, 36.7), 1))
         return temperature
 
-    def _check_session(self):
+    def _check_session(self) -> bool:
         """
         检测 session 是否仍有效
         """
@@ -131,7 +131,7 @@ class _Report(object):
             self._result = "%s获取%s校验码失败" % (self._username, self._reporter_name)
             raise Exception(self._result)
 
-    def _today_report(self):
+    def _today_report(self) -> dict:
         """
         上报今日信息
         """
@@ -150,7 +150,7 @@ class _Report(object):
         self._today_report_result = json.loads(resp.text)
         return self._today_report_result
 
-    def report(self):
+    def report(self) -> str:
         self._login()
         self._get_last_form_data()
         self._clean_form_data()
@@ -170,13 +170,13 @@ class Time(object):
     用于填报的时间判断
     """
     def __init__(self):
-        self.now_time = self._get_now_time()
-        self.today = self._get_today()
-        self.hour = self._get_hour()
-        self.minute = self._get_minute()
+        self.now_time: datetime.datetime = self._get_now_time()
+        self.today: str = self._get_today()
+        self.hour: str = self._get_hour()
+        self.minute: str = self._get_minute()
 
-        self.int_hour = int(self.hour)
-        self.int_minute = int(self.minute)
+        self.int_hour: int = int(self.hour)
+        self.int_minute: int = int(self.minute)
 
     def _get_now_time(self):
         t = datetime.datetime.utcnow()
