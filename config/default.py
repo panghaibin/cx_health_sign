@@ -11,8 +11,8 @@ class DefaultHealthReport(_Report):
     """
     def __init__(self, username, password, school_id=''):
         _Report.__init__(self, username, password, school_id)
-        self._form_id = '99783'
-        self._enc = 'cb9894ce56b7e222cb3eab72d0fed834'
+        self._form_id = '7185'
+        self._enc = 'f837c93e0de9d9ad82db707b2c27241e'
         self._reporter_name = '学习通健康表单'
 
     def _clean_form_data(self):
