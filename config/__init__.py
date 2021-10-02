@@ -175,8 +175,8 @@ class Time(object):
         self.hour: str = self._get_hour()
         self.minute: str = self._get_minute()
 
-        self.int_hour: int = int(self.hour)
-        self.int_minute: int = int(self.minute)
+        self.int_hour: int = self.now_time.hour
+        self.int_minute: int = self.now_time.minute
 
     def _get_now_time(self):
         t = datetime.datetime.utcnow()
