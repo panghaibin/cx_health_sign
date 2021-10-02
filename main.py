@@ -60,8 +60,30 @@ class MainHandle(object):
             self.global_send_result = '未指定全局消息推送'
         return self.global_send_result
 
+    def main(self):
+        if self.users_num == 0:
+            print('用户数量为0，开始添加用户')
+            self.add_user()
+            print('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
+        # 填报全部用户
+        self.report_all()
+        # 打印每个用户健康报告填报结果
+        print(self.report_results)
+        # 打印每个用户的消息发送结果
+        print(self.send_results)
+        # 发送全局消息
+        self.global_send()
+        # 打印全局消息发送结果
+        print(self.global_send_result)
+
+    def github(self):
+        pass
+
     @staticmethod
     def _input(message: str, is_require=True, message_list=None):
+        """
+        封装的输入函数，判断是否必填项，支持对一个列表的选择（返回该列表的下标 (int) ），进行了错误处理
+        """
         if message_list is not None:
             for i in range(len(message_list)):
                 print("%s: %s" % (i + 1, message_list[i]))
@@ -99,7 +121,8 @@ class MainHandle(object):
         school_id = self._input('请输入: ', is_require=False)
 
         print('输入消息发送类型设置，选填')
-        send_types = SendMsg.api_types
+        send = SendMsg
+        send_types = [send.api_types_name[i] + ' ' + send.api_types_url[i] for i in range(len(send.api_types_name))]
         api_type = self._input('请选择: ', is_require=False, message_list=send_types[1:])
         api_type = 0 if api_type == '' else api_type + 1
 
@@ -119,10 +142,22 @@ class MainHandle(object):
 
 class SendMsg(object):
     """
-    消息发送函数
+    消息发送类
     """
 
-    api_types = ['未设置', '方糖气球', '推送加']
+    api_types_name = [
+        '未设置',
+        'Server酱',
+        '推送加',
+        '推送加(hxtrip域下)'
+    ]
+
+    api_types_url = [
+        '',
+        'https://sct.ftqq.com/',
+        'https://www.pushplus.plus/',
+        'https://pushplus.hxtrip.com/'
+    ]
 
     def __init__(self, user_api, result: str = None, result_list: list = None):
         """
@@ -130,28 +165,27 @@ class SendMsg(object):
         result_list: 发送多条消息，合并在消息的详情发送
         两个二选一， result 优先
         """
-        result = '' if result is None else result
-        result_list = [] if result_list is None else result_list
-        if len(result) == 0 and len(result_list) == 0:
+        if not result and not result_list:
             raise Exception('必须传入 result 或 result_list')
 
         self.api_type = user_api['api_type']
         self.api_key = user_api['api_key']
-        if self.api_type not in range(1, len(self.api_types)):
+        if self.api_type not in range(1, len(self.api_types_name)):
             raise Exception('未正确配置消息发送类型')
-        self.api_type_name = self.api_types[self.api_type]
+        self.api_type_name = self.api_types_name[self.api_type]
+        self.api_type_url = self.api_types_url[self.api_type]
         self.send_result: dict = {}
         self.send_result_bool: bool = False
 
         self.result_list = result_list
-        self.title = result if result != '' else result_list[0]
+        self.title = result_list[0] if not result else result
         self.desp: str = Time().now_time.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
-        self.desp += result if result != '' else "\n\n".join(result_list)
+        self.desp += "\n\n".join(result_list) if not result else result
         # 添加随机字符以确保提交成功
         self.desp += "\n\n" + str(random.randint(0, 100000))
 
         # 这里要写在最后，确保 title resp 已初始化
-        self._send_api = (None, self.server_chan(), self.push_plus())
+        self._send_api = (None, self.server_chan(), self.push_plus(), self.push_plus_hxtrip())
 
         self.send_msg()
 
@@ -187,6 +221,23 @@ class SendMsg(object):
         else:
             return False
 
+    def push_plus_hxtrip(self):
+        url = 'http://pushplus.hxtrip.com/send'
+        data = {
+            "token": self.api_key,
+            "title": self.title,
+            "content": self.desp.replace("\n\n", "<br>")
+        }
+        body = json.dumps(data).encode(encoding='utf-8')
+        headers = {'Content-Type': 'application/json',
+                   'accept': 'application/json'}
+        text = requests.post(url, data=body, headers=headers).text
+        result = json.loads(text)
+        if result['data'] == '发送消息成功':
+            return True
+        else:
+            return False
+
     def send_msg(self) -> bool:
         result_bool = self._send_api[self.api_type]
         self.send_result_bool = result_bool
@@ -196,20 +247,7 @@ class SendMsg(object):
 if __name__ == '__main__':
     main = MainHandle()
     if len(sys.argv) == 1:
-        if main.users_num == 0:
-            print('用户数量为0，开始添加用户')
-            main.add_user()
-            print('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
-        # 填报全部用户
-        main.report_all()
-        # 打印每个用户健康报告填报结果
-        print(main.report_results)
-        # 打印每个用户的消息发送结果
-        print(main.send_results)
-        # 发送全局消息
-        main.global_send()
-        # 打印全局消息发送结果
-        print(main.global_send_result)
+        main.main()
     elif len(sys.argv) == 2:
         if sys.argv[1] == 'add':
             main.add_user()
