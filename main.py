@@ -117,7 +117,7 @@ class MainHandle(object):
         print('输入密码，必填')
         password = self._input('请输入: ')
 
-        print('输入需要报送的配置类型，必填')
+        print('输入需要打卡的配置类型，必填')
         report_types = list(self._reporters.keys())
         post_type = self._input('请选择: ', message_list=report_types)
         post_type = report_types[post_type]
@@ -125,7 +125,7 @@ class MainHandle(object):
         print('输入学校id，选填 若使用学号登录则必填')
         school_id = self._input('请输入: ', is_require=False)
 
-        print('输入消息发送类型设置，选填')
+        print('选择消息推送服务，选填')
         send = SendMsg
         send_types = [send.api_types_name[i] + ' ' + send.api_types_url[i] for i in range(len(send.api_types_name))]
         api_type = self._input('请选择: ', is_require=False, message_list=send_types[1:])
@@ -142,6 +142,26 @@ class MainHandle(object):
             self._users = setting.get_users(post_type=None)
         else:
             print('用户添加失败')
+        return add_result
+
+    def set_global_send(self):
+        setting = Setting()
+        print('设置全局推送服务')
+
+        print('选择消息推送服务')
+        send = SendMsg
+        send_types = [send.api_types_name[i] + ' ' + send.api_types_url[i] for i in range(len(send.api_types_name))]
+        api_type = self._input('请选择: ', is_require=True, message_list=send_types[1:])
+        api_type = 0 if api_type == '' else api_type + 1
+
+        print('输入消息推送 key')
+        api_key = self._input('请输入: ')
+        add_result = setting.set_global_send(api_type, api_key)
+        if add_result:
+            print('全局推送设置成功')
+            self._global_api = setting.global_api
+        else:
+            print('全局推送设置失败')
         return add_result
 
 
@@ -280,5 +300,7 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2:
         if sys.argv[1] == 'add':
             MainHandle().add_user()
+        elif sys.argv[1] == 'send':
+            MainHandle().set_global_send()
         elif sys.argv[1] == 'gh':
             GitHubHandle().main()

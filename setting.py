@@ -74,6 +74,18 @@ class Setting(object):
             self._check_users()
         return save_result
 
+    def set_global_send(self, api_type, api_key):
+        global_api = dict(api_type=api_type, api_key=api_key)
+        global_send = {
+            'global_send': global_api
+        }
+        self.setting.update(global_send)
+        save_result = self._save_setting()
+        if save_result:
+            self._load_setting()
+            self.global_api: dict = self.setting['global_send']
+        return save_result
+
 
 class GitHub(object):
     """
