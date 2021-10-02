@@ -4,6 +4,7 @@ import json
 import random
 import requests
 from setting import Setting
+from setting import GitHub
 from config import Time
 from config.default import DefaultHealthReport
 from config.nnnu import NNNUHealthReport
@@ -16,15 +17,14 @@ class MainHandle(object):
     """
 
     def __init__(self):
-        self.setting = Setting()
+        self._users: list = []
+        self.users_num: int = 0
+        self._global_api: dict = {}
         self._reporters = {
             'test': TestReport,
             'default': DefaultHealthReport,
             'nnnu': NNNUHealthReport,
         }
-        self._users = self.setting.get_users(post_type=None)
-        self.users_num = len(self._users)
-        self._global_api = self.setting.global_api
 
         # 健康上报结果，多用户存储在一个数组
         self.report_results: list = []
@@ -33,16 +33,38 @@ class MainHandle(object):
         # 全局消息发送结果
         self.global_send_result: str = ''
 
+    def main(self):
+        setting = Setting()
+        self._users = setting.get_users(post_type=None)
+        self.users_num = len(self._users)
+        self._global_api = setting.global_api
+
+        if self.users_num == 0:
+            print('用户数量为0，开始添加用户')
+            self.add_user()
+            print('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
+        # 填报全部用户
+        self.report_all()
+        # 发送全局消息
+        self.global_send()
+
+        # 打印每个用户健康报告填报结果
+        print(self.report_results)
+        # 打印每个用户的消息发送结果
+        print(self.send_results)
+        # 打印全局消息发送结果
+        print(self.global_send_result)
+
     def report_all(self):
         for user in self._users:
             try:
                 post_type = user['post_type']
-                r = self._reporters[post_type](user['username'], user['password'], user['school_id'])
+                r = self._reporters[post_type](user['username'], user['password'], user.get('school_id', ''))
                 t = r.report()
                 self.report_results.append(t)
             except Exception as e:
                 self.report_results.append(str(e))
-            if user['api_type'] != 0:
+            if user.get('api_type', 0) != 0:
                 send = SendMsg(user, result=self.report_results[-1])
                 self.send_results.append(send.send_result)
             else:
@@ -59,25 +81,6 @@ class MainHandle(object):
         else:
             self.global_send_result = '未指定全局消息推送'
         return self.global_send_result
-
-    def main(self):
-        if self.users_num == 0:
-            print('用户数量为0，开始添加用户')
-            self.add_user()
-            print('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
-        # 填报全部用户
-        self.report_all()
-        # 打印每个用户健康报告填报结果
-        print(self.report_results)
-        # 打印每个用户的消息发送结果
-        print(self.send_results)
-        # 发送全局消息
-        self.global_send()
-        # 打印全局消息发送结果
-        print(self.global_send_result)
-
-    def github(self):
-        pass
 
     @staticmethod
     def _input(message: str, is_require=True, message_list=None):
@@ -105,6 +108,8 @@ class MainHandle(object):
         return data
 
     def add_user(self) -> bool:
+        setting = Setting()
+
         print('输入用户名')
         print('手机号/邮箱/学号均可，必填')
         username = self._input('请输入: ')
@@ -131,13 +136,38 @@ class MainHandle(object):
             print('输入消息推送 key')
             api_key = self._input('请输入: ')
 
-        add_result = self.setting.add_user(username, password, post_type, school_id, api_type, api_key)
+        add_result = setting.add_user(username, password, post_type, school_id, api_type, api_key)
         if add_result:
             print('用户添加成功')
-            self._users = self.setting.get_users(post_type=None)
+            self._users = setting.get_users(post_type=None)
         else:
             print('用户添加失败')
         return add_result
+
+
+class GitHubHandle(MainHandle):
+
+    def __init__(self):
+        super().__init__()
+
+    def main(self):
+        setting = GitHub()
+        self._users = setting.get_users(post_type=None)
+        self.users_num = len(self._users)
+        self._global_api = setting.global_api
+
+        if self.users_num == 0:
+            raise Exception('GitHub Actions Secrets 未设置')
+        # 填报全部用户
+        self.report_all()
+        # 发送全局消息
+        self.global_send()
+
+        # 打印健康报告填报结果，由于 GitHub Actions 的日志是公开的，此处仅打印数量
+        print('填报结果：%s位，详情见消息推送' % len(self.report_results))
+
+    def add_user(self) -> bool:
+        return False
 
 
 class SendMsg(object):
@@ -159,7 +189,7 @@ class SendMsg(object):
         'https://pushplus.hxtrip.com/'
     ]
 
-    def __init__(self, user_api, result: str = None, result_list: list = None):
+    def __init__(self, user_api: dict, result: str = None, result_list: list = None):
         """
         result: 仅发送单条消息
         result_list: 发送多条消息，合并在消息的详情发送
@@ -168,8 +198,8 @@ class SendMsg(object):
         if not result and not result_list:
             raise Exception('必须传入 result 或 result_list')
 
-        self.api_type = user_api['api_type']
-        self.api_key = user_api['api_key']
+        self.api_type = user_api.get('api_type', 0)
+        self.api_key = user_api.get('api_key', '')
         if self.api_type not in range(1, len(self.api_types_name)):
             raise Exception('未正确配置消息发送类型')
         self.api_type_name = self.api_types_name[self.api_type]
@@ -245,9 +275,10 @@ class SendMsg(object):
 
 
 if __name__ == '__main__':
-    main = MainHandle()
     if len(sys.argv) == 1:
-        main.main()
+        MainHandle().main()
     elif len(sys.argv) == 2:
         if sys.argv[1] == 'add':
-            main.add_user()
+            MainHandle().add_user()
+        elif sys.argv[1] == 'gh':
+            GitHubHandle().main()

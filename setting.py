@@ -73,3 +73,61 @@ class Setting(object):
             self._load_setting()
             self._check_users()
         return save_result
+
+
+class GitHub(object):
+    """
+    用于 GitHub Actions
+    """
+
+    def __init__(self):
+        self._users_raw = os.environ['users'].split(';')
+        self._global_api_raw = os.environ.get('send', '').split(',')
+
+        self._users: list = []
+        self._check_users()
+        self.user_list: list = []
+
+        self.global_api: dict = {}
+        self._check_global_api()
+
+    def _check_users(self):
+        _users = []
+        for user_info_raw in self._users_raw:
+            user_info = user_info_raw.split(',')
+            if len(user_info) == 3:
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                            school_id='', api_type=0, api_key='')
+            elif len(user_info) == 4:
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                            school_id=user_info[3], api_type=0, api_key='')
+            elif len(user_info) == 5:
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                            school_id='', api_type=int(user_info[3]), api_key=user_info[4])
+            elif len(user_info) == 6:
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                            school_id=user_info[3], api_type=int(user_info[4]), api_key=user_info[5])
+            else:
+                continue
+            _users.append(user)
+        self._users = _users
+
+    def get_users(self, post_type=None) -> list:
+        if not post_type:
+            self.user_list = self._users
+        else:
+            user_list = []
+            for user in self._users:
+                if user['post_type'] == post_type:
+                    user_list.append(user)
+            self.user_list = user_list
+        return self.user_list
+
+    def _check_global_api(self):
+        if len(self._global_api_raw) == 2:
+            self.global_api = dict(
+                api_type=int(self._global_api_raw[0]),
+                api_key=self._global_api_raw[1]
+            )
+        else:
+            self.global_api = dict(api_type=0, api_key='')
