@@ -5,37 +5,33 @@ from config import _Report
 class DefaultHealthReport(_Report):
     """
     学习通默认健康上报表单
-    _clean_form_data 参考自 GitHub
+    form_id 及 enc 来自 GitHub
         https://github.com/mkdir700/chaoxing_auto_sign/blob/bf2255ed59cdbdf0e810e31d07ef6198810fdbe5/heath/main.py
-    未验证可用性
+    已修改适配
     """
     def __init__(self, username, password, school_id=''):
         _Report.__init__(self, username, password, school_id)
+
         self._form_id = '7185'
         self._enc = 'f837c93e0de9d9ad82db707b2c27241e'
         self._reporter_name = '学习通健康表单'
 
+        self._options_ids = [7, 8, 43, 46, 52, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34]
+        self._isShow = [9, 45, 48, 49, 47, 53, 54, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35]
+        self._hasAuthority_ids = [5, 6]
+
     def _clean_form_data(self):
         form_data = self._last_form_data
-        not_show = [x for x in range(9, 36) if x % 2 != 0]
-        not_show.extend([38, 39, 41, 42])
         for f in form_data:
-            if f['id'] == 5:
-                f['fields'][0]['tip']['text'] = r"<p+style=\"text-align:+center;\"><span+style=\"font-size:+large" \
-                                                r";+font-weight:+bold;\">基本信息</span></p> "
-            elif f['id'] == 6:
-                f['fields'][0]['tip']['text'] = r"<p+style=\"text-align:+center;\"><span+style=\"font-size:+large" \
-                                                r";+font-weight:+bold;\">健康状况</span></p> "
-            elif f['id'] == 36:
-                f['fields'][0]['tip']['text'] = r"<p+style=\"text-align:+center;\"><span+style=\"font-size:+large" \
-                                                r";+font-weight:+bold;\">出行情况</span></p> "
-            elif f['id'] == 8:
-                f['fields'][0]['values'][0]['val'] = "健康 "
-                f['fields'][0]['options'][0]['title'] = "健康 "
-
-            if f['id'] in not_show:
+            if f['id'] in self._options_ids:
+                # 下拉项选择改写为 true
+                for option in f['fields'][0]['options']:
+                    if f['fields'][0]['values'][0]['val'] == option['title']:
+                        option['checked'] = True
+            elif f['id'] in self._isShow:
                 f['isShow'] = False
-            else:
-                f['isShow'] = True
+            elif f['id'] in self._hasAuthority_ids:
+                f['hasAuthority'] = False
+
         self._today_form_data = form_data
         return form_data
