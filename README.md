@@ -1,7 +1,7 @@
 # ChaoXing Health Sign
 超星学习通健康打卡上报
 
-Ver.21.10.02:02
+Ver.21.10.03:01
 
 项目地址：<https://github.com/panghaibin/cx_health_sign>
 

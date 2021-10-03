@@ -144,7 +144,7 @@ class MainHandle(object):
             print('用户添加失败')
         return add_result
 
-    def set_global_send(self):
+    def set_global_send(self) -> bool:
         setting = Setting()
         print('设置全局推送服务')
 
@@ -187,6 +187,9 @@ class GitHubHandle(MainHandle):
         print('填报结果：%s位，详情见消息推送' % len(self.report_results))
 
     def add_user(self) -> bool:
+        return False
+
+    def set_global_send(self) -> bool:
         return False
 
 
@@ -271,7 +274,7 @@ class SendMsg(object):
         else:
             return False
 
-    def push_plus_hxtrip(self):
+    def push_plus_hxtrip(self) -> bool:
         url = 'http://pushplus.hxtrip.com/send'
         data = {
             "token": self.api_key,
