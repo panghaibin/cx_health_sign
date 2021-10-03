@@ -183,8 +183,12 @@ class GitHubHandle(MainHandle):
         # 发送全局消息
         self.global_send()
 
-        # 打印健康报告填报结果，由于 GitHub Actions 的日志是公开的，此处仅打印数量
-        print('填报结果：%s位，详情见消息推送' % len(self.report_results))
+        # 打印每个用户健康报告填报结果
+        print(self.report_results)
+        # 打印每个用户的消息发送结果
+        print(self.send_results)
+        # 打印全局消息发送结果
+        print(self.global_send_result)
 
     def add_user(self) -> bool:
         return False

@@ -13,11 +13,36 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - run: |
+      - name: Set Environment
+        run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Report Start
+      - name: Start Report
         env:
           users: ${{ secrets.USERS }}
           send: ${{ secrets.SEND }}
-        run: "python main.py gh"
+        if: ${{ env.users != ''}}
+        run: |
+          python main.py gh > output.log
+      - name: Encrypt Log
+        env:
+          users: ${{ secrets.USERS }}
+          log_password: ${{ secrets.LOGPASS }}
+        if: ${{ env.users != '' && env.log_password != ''}}
+        run: |
+          sudo apt-get install -y p7zip-full
+          7z a -p${{ env.log_password }} -mx0 -mhe log.7z output.log
+      - name: Upload Log
+        env:
+          users: ${{ secrets.USERS }}
+          log_password: ${{ secrets.LOGPASS }}
+        if: ${{ env.users != '' && env.log_password != ''}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: ${{ github.workspace }}/log.7z
+      - name: Delete Log and Session
+        run: |
+          rm -f output.log
+          rm -rf session/*.sess
+          rm -f log.7z
