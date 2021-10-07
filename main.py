@@ -290,7 +290,7 @@ class SendMsg(object):
                    'accept': 'application/json'}
         text = requests.post(url, data=body, headers=headers).text
         result = json.loads(text)
-        if result['data'] == '发送消息成功':
+        if result['code'] == 200:
             return True
         else:
             return False
