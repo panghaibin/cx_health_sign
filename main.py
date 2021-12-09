@@ -3,11 +3,13 @@ import sys
 import json
 import random
 import requests
+from time import sleep
 from setting import Setting
 from setting import GitHub
 from config import Time
 from config.default import DefaultHealthReport
 from config.nnnu import NNNUHealthReport
+from config.hnucc import HNUCCHealthReport
 from config.test import TestReport
 
 
@@ -24,6 +26,7 @@ class MainHandle(object):
             'test': TestReport,
             'default': DefaultHealthReport,
             'nnnu': NNNUHealthReport,
+            'hnucc': HNUCCHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
@@ -57,6 +60,7 @@ class MainHandle(object):
 
     def report_all(self):
         for user in self._users:
+            # sleep(random.randint(30, 180))
             try:
                 post_type = user['post_type']
                 r = self._reporters[post_type](user['username'], user['password'], user.get('school_id', ''))
@@ -242,7 +246,7 @@ class SendMsg(object):
         self.desp += "\n\n" + str(random.randint(0, 100000))
 
         # 这里要写在最后，确保 title resp 已初始化
-        self._send_api = (None, self.server_chan(), self.push_plus(), self.push_plus_hxtrip())
+        self._send_api = (None, self.server_chan, self.push_plus, self.push_plus_hxtrip)
 
         self.send_msg()
 
@@ -296,7 +300,7 @@ class SendMsg(object):
             return False
 
     def send_msg(self) -> bool:
-        result_bool = self._send_api[self.api_type]
+        result_bool = self._send_api[self.api_type]()
         self.send_result_bool = result_bool
         return self.send_result_bool
 

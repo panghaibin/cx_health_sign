@@ -1,7 +1,7 @@
 # ChaoXing Health Sign
 超星学习通健康打卡上报
 
-Ver.21.10.03:01
+Ver.21.12.09:01
 
 项目地址：<https://github.com/panghaibin/cx_health_sign>
 
@@ -93,6 +93,8 @@ Ver.21.10.03:01
    ```shell
    git clone https://github.com/panghaibin/cx_health_sign
    cd cx_health_sign
+   # 安装依赖
+   pip3 install -r requirements.txt
    ```
 
 2. 添加用户
@@ -148,6 +150,7 @@ Ver.21.10.03:01
 | test  | 测试用表单 | 一个不限时间和次数的填报表单，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=13243&enc=3a9416c86432c5f667f2b23a88a0123a)
 | default | 学习通默认健康打卡表单 | 绝大部分学校所用，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e)
 | nnnu | 南宁师范大学三检 | [早检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99778&enc=5affca1a747445b8d3ec9de92612ecae) [午检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99781&enc=e4041a9c358a738a1dd8780e8dfeccb6) [晚检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99783&enc=cb9894ce56b7e222cb3eab72d0fed834)
+| hnucc | 湖南城建职业技术学院学生健康信息填报 | [表单主页](https://office.chaoxing.com/front/third/apps/forms/fore/apply?id=86243&enc=de7939f413267efd9a0fd882dca9140b) |
 
 如果你的学校未使用默认健康打卡表单，而使用自定义打卡表，但不在本项目支持列表之内，你可以：
  - 自己抓包学习通的表单链接得到 `form_id` 和 `enc` ，在本项目的 `config` 文件夹下新建一个 Python 文件，新建一个继承自 `config._Report` 的类，参考 `test.py` 下或其它文件的适配方法，根据实际情况，对你的学校进行适配。测试通过后即可向本项目 `Pull request` 。
