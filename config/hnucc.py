@@ -10,13 +10,17 @@ class HNUCCHealthReport(_Report):
         super().__init__(username, password, school_id)
         self._form_id = '86243'
         self._enc = 'de7939f413267efd9a0fd882dca9140b'
-        self._reporter_name = 'HNUCC学生健康信息填报'
+        self._reporter_name = 'HNUCC健康打卡'
 
         self._options_ids = [15, 21, 4, 6, 7, 8, 26, 27]
         self._college_id = 15
         self._classes_ids = [21, 25, 23, 22, 24, 28]
 
     def _clean_form_data(self):
+        """
+        表单的<所在班级>存在多个，其可见性 isShow 根据<所在系部>决定
+        _college_id 为系部的id，确定其系部对应的班级后将其余班级的 isShow 设置为 False
+        """
         form_data = self._last_form_data
         for f in form_data:
             if f['id'] in self._options_ids:

@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import os
 import sys
 import json
 import random
@@ -36,6 +37,19 @@ class MainHandle(object):
         # 全局消息发送结果
         self.global_send_result: str = ''
 
+    @staticmethod
+    def _sleep():
+        """
+        休眠函数，多个用户填报时，防止被封
+        开发环境下如需临时关闭，可设置环境变量 sleep_time=0
+        也可据此手动指定休眠时间
+        """
+        os_sleep = os.getenv('sleep_time', '-1')
+        if os_sleep == '-1':
+            sleep(random.randint(30, 180))
+        else:
+            sleep(int(os_sleep))
+
     def main(self):
         setting = Setting()
         self._users = setting.get_users(post_type=None)
@@ -60,7 +74,7 @@ class MainHandle(object):
 
     def report_all(self):
         for user in self._users:
-            # sleep(random.randint(30, 180))
+            self._sleep()
             try:
                 post_type = user['post_type']
                 r = self._reporters[post_type](user['username'], user['password'], user.get('school_id', ''))
