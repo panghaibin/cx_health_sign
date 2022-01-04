@@ -11,6 +11,7 @@ from config import Time
 from config.default import DefaultHealthReport
 from config.nnnu import NNNUHealthReport
 from config.hnucc import HNUCCHealthReport
+from config.swut import SWUTHealthReport
 from config.test import TestReport
 
 
@@ -28,6 +29,7 @@ class MainHandle(object):
             'default': DefaultHealthReport,
             'nnnu': NNNUHealthReport,
             'hnucc': HNUCCHealthReport,
+            'swut': SWUTHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
