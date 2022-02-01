@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from config import _Report
+from config import Time
 
 
 class HNISCHealthReport(_Report):
@@ -11,6 +12,7 @@ class HNISCHealthReport(_Report):
         self._reporter_name = 'HNISC健康打卡'
 
         self._temperature_id = 7
+        self._report_time_id = 15
         self._options_ids = [33, 6, 25, 26, 8, 9]
         self._hasAuthority_ids = [1, 23, 24, 32, 36]
         self._isShow_ids = [14, 29, 30]
@@ -21,6 +23,14 @@ class HNISCHealthReport(_Report):
             if f['id'] == self._temperature_id:
                 temperature = self._random_temperature()
                 f['fields'][0]['values'][0]['val'] = temperature
+            elif f['id'] == self._report_time_id:
+                today = Time().today
+                report_time = Time().now_time.strftime('%Y-%m-%d %H:%M')
+                if f['fields'][0]['values'][0]['val'].startswith(today):
+                    self._result = '%s今日%s已填报过%s' % (self._username, today, self._reporter_name)
+                    raise Exception(self._result)
+                else:
+                    f['fields'][0]['values'][0]['val'] = report_time
             elif f['id'] in self._options_ids:
                 # 下拉项选择改写为 true
                 for option in f['fields'][0]['options']:
