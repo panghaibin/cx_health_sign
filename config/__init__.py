@@ -44,7 +44,7 @@ class _Report(object):
         """
         check_url = 'http://mooc1-1.chaoxing.com/api/workTestPendingNew'
         resp = self._session.get(check_url)
-        if '用户登录' in resp.text:
+        if '登录' in resp.text:
             return False
         else:
             return True
@@ -92,7 +92,7 @@ class _Report(object):
         resp = self._session.get(api, params=params)
         raw_data = json.loads(resp.text)
         if not raw_data['data']:
-            self._result = '%s获取上次%s提交数据为空，可能为今日已提交' % (self._username, self._reporter_name)
+            self._result = '%s获取上次%s提交数据为空！' % (self._username, self._reporter_name)
             raise Exception(self._result)
         form_data = raw_data['data']['formsUser']['formData']
         d = {
