@@ -3,7 +3,9 @@ import os
 import sys
 import json
 import random
+import traceback
 import requests
+import logging
 from time import sleep
 from setting import Setting
 from setting import GitHub
@@ -45,12 +47,11 @@ class MainHandle(object):
     def _sleep():
         """
         休眠函数，多个用户填报时，防止被封
-        开发环境下如需临时关闭，可设置环境变量 sleep_time=0
-        也可据此手动指定休眠时间
+        通过设置环境变量控制，默认 5s
         """
-        os_sleep = os.getenv('sleep_time', '-1')
-        if os_sleep == '-1':
-            sleep(random.randint(30, 180))
+        os_sleep = os.getenv('sleep_time', '5')
+        if os_sleep == 'random':
+            sleep(random.randint(30, 360))
         else:
             sleep(int(os_sleep))
 
@@ -85,7 +86,9 @@ class MainHandle(object):
                 t = r.report()
                 self.report_results.append(t)
             except Exception as e:
-                self.report_results.append(str(e))
+                logging.exception(e)
+                msg = traceback.format_exc()
+                self.report_results.append(str(msg))
             if user.get('api_type', 0) != 0:
                 send = SendMsg(user, result=self.report_results[-1])
                 self.send_results.append(send.send_result)
@@ -258,6 +261,7 @@ class SendMsg(object):
 
         self.result_list = result_list
         self.title = result_list[0] if not result else result
+        self.title = self.title.replace("\n", '<br>')[:99]
         self.desp: str = Time().now_time.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
         self.desp += "\n\n".join(result_list) if not result else result
         # 添加随机字符以确保提交成功

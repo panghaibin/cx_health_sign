@@ -1,6 +1,6 @@
 ![cx_health_sign](https://socialify.git.ci/panghaibin/cx_health_sign/image?description=1&forks=1&issues=1&language=1&stargazers=1)
 
-Ver.22.02.08
+Ver.22.02.08:02
 
 项目地址：<https://github.com/panghaibin/cx_health_sign>
 
