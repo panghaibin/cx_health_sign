@@ -60,7 +60,7 @@ class NNNU1HealthReport(_NNNU0HealthReport):
 
 class NNNU2HealthReport(_NNNU0HealthReport):
     """
-    NNNU 午检
+    NNNU 午检（已废弃）
     """
     def __init__(self, username, password, school_id=''):
         _NNNU0HealthReport.__init__(self, username, password, school_id)
@@ -77,14 +77,14 @@ class NNNU2HealthReport(_NNNU0HealthReport):
 
 class NNNU3HealthReport(_NNNU0HealthReport):
     """
-    NNNU 晚检
+    NNNU 午检（原晚检）
     """
     def __init__(self, username, password, school_id=''):
         _NNNU0HealthReport.__init__(self, username, password, school_id)
         self._form_id = '99783'
         # noinspection SpellCheckingInspection
         self._enc = 'cb9894ce56b7e222cb3eab72d0fed834'
-        self._reporter_name = 'NNNU晚检表单'
+        self._reporter_name = 'NNNU午检表单'
 
         self._day_id = 21
         self._temperature_id = -1
@@ -102,11 +102,15 @@ if 6 <= hour <= 9:
     class NNNUHealthReport(NNNU1HealthReport):
         def __init__(self, username, password, school_id=''):
             super().__init__(username, password, school_id)
+# elif 11 <= hour <= 14 or hour == 15 and 0 <= minute <= 30:
+#     class NNNUHealthReport(NNNU2HealthReport):
+#         def __init__(self, username, password, school_id=''):
+#             super().__init__(username, password, school_id)
+# elif 18 <= hour <= 22 or hour == 23 and 0 <= minute <= 59:
+#     class NNNUHealthReport(NNNU3HealthReport):
+#         def __init__(self, username, password, school_id=''):
+#             super().__init__(username, password, school_id)
 elif 11 <= hour <= 14 or hour == 15 and 0 <= minute <= 30:
-    class NNNUHealthReport(NNNU2HealthReport):
-        def __init__(self, username, password, school_id=''):
-            super().__init__(username, password, school_id)
-elif 18 <= hour <= 22 or hour == 23 and 0 <= minute <= 59:
     class NNNUHealthReport(NNNU3HealthReport):
         def __init__(self, username, password, school_id=''):
             super().__init__(username, password, school_id)

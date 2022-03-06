@@ -148,7 +148,7 @@ Ver.22.02.08:02
 | :---: | :---: | :---: |
 | test  | 测试用表单 | 一个不限时间和次数的填报表单，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=13243&enc=3a9416c86432c5f667f2b23a88a0123a)
 | default | 学习通默认健康打卡表单 | 绝大部分学校所用，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e)
-| nnnu | 南宁师范大学三检 | [早检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99778&enc=5affca1a747445b8d3ec9de92612ecae) [午检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99781&enc=e4041a9c358a738a1dd8780e8dfeccb6) [晚检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99783&enc=cb9894ce56b7e222cb3eab72d0fed834)
+| nnnu | 南宁师范大学两检 | [早检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99778&enc=5affca1a747445b8d3ec9de92612ecae) [午检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99783&enc=cb9894ce56b7e222cb3eab72d0fed834)
 | hnucc | 湖南城建职业技术学院学生健康信息填报 | [表单主页](https://office.chaoxing.com/front/third/apps/forms/fore/apply?id=86243&enc=de7939f413267efd9a0fd882dca9140b) |
 | swut | 山东外国语职业技术大学健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=139669&enc=d3fd2b1818f116a76aff41eee80ea348) |
 | hnisc | 湖南信息学院健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=158324&enc=b08ae0de35d833ebc04ad7c5604f1b43) |
