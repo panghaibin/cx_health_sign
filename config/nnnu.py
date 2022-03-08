@@ -87,7 +87,7 @@ class NNNU3HealthReport(_NNNU0HealthReport):
         self._reporter_name = 'NNNU午检表单'
 
         self._day_id = 21
-        self._temperature_id = -1
+        self._temperature_id = 29
         self._options_ids = [13, 22, 23]
         self._hasAuthority_ids = [8, 9, 10, 24, 26, 27, 28]
 
@@ -98,7 +98,7 @@ class NNNU3HealthReport(_NNNU0HealthReport):
 t = Time()
 hour = t.int_hour
 minute = t.int_minute
-if 6 <= hour <= 9:
+if 7 <= hour <= 11:
     class NNNUHealthReport(NNNU1HealthReport):
         def __init__(self, username, password, school_id=''):
             super().__init__(username, password, school_id)
@@ -110,7 +110,7 @@ if 6 <= hour <= 9:
 #     class NNNUHealthReport(NNNU3HealthReport):
 #         def __init__(self, username, password, school_id=''):
 #             super().__init__(username, password, school_id)
-elif 11 <= hour <= 14 or hour == 15 and 0 <= minute <= 30:
+elif 14 <= hour <= 18:
     class NNNUHealthReport(NNNU3HealthReport):
         def __init__(self, username, password, school_id=''):
             super().__init__(username, password, school_id)
