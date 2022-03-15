@@ -11,8 +11,8 @@ class SWUTHealthReport(_Report):
     def __init__(self, username, password, school_id=''):
         _Report.__init__(self, username, password, school_id)
 
-        self._form_id = '139669'
-        self._enc = 'd3fd2b1818f116a76aff41eee80ea348'
+        self._form_id = '175235'
+        self._enc = 'fb50b811a71a357bbb3a87424f7c074c'
         self._reporter_name = 'SWUT健康打卡'
 
         self._temperature_id = 6
