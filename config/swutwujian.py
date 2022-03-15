@@ -13,7 +13,7 @@ class SWUTHealthReport(_Report):
 
         self._form_id = '175235'
         self._enc = 'fb50b811a71a357bbb3a87424f7c074c'
-        self._reporter_name = 'SWUT健康打卡'
+        self._reporter_name = 'SWUT学生午检'
 
         self._temperature_id = 6
         self._options_ids = [10, 12, 13, 19, 14]
