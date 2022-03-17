@@ -1,6 +1,6 @@
 ![cx_health_sign](https://socialify.git.ci/panghaibin/cx_health_sign/image?description=1&forks=1&issues=1&language=1&stargazers=1)
 
-Ver.22.02.08:02
+Ver.22.03.17  更新了部分学校，详见[下方列表](#支持的学校表单)（一些学校因仅提供了表单链接，未提供测试账号，因此没有测试其可用性，如有bug请提issue）
 
 项目地址：<https://github.com/panghaibin/cx_health_sign>
 
@@ -14,11 +14,30 @@ Ver.22.02.08:02
  - 支持将所有打卡结果推送给指定的一人
 
 ## 开始使用
+## 支持的学校表单
+| 表单代码 | 名称 | 备注 |
+| :---: | :---: | :---: |
+| test  | 测试用表单 | 一个不限时间和次数的填报表单，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=13243&enc=3a9416c86432c5f667f2b23a88a0123a)
+| default | 学习通默认健康打卡表单 | 绝大部分学校所用，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e)
+| nnnu | 南宁师范大学两检 | [早检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99778&enc=5affca1a747445b8d3ec9de92612ecae) [午检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99783&enc=cb9894ce56b7e222cb3eab72d0fed834)
+| hnucc | 湖南城建职业技术学院学生健康信息填报 | [表单主页](https://office.chaoxing.com/front/third/apps/forms/fore/apply?id=86243&enc=de7939f413267efd9a0fd882dca9140b) |
+| swut | 山东外国语职业技术大学健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=139669&enc=d3fd2b1818f116a76aff41eee80ea348) |
+| swut_2 | 山东外国语职业技术大学午检打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=175235&enc=fb50b811a71a357bbb3a87424f7c074c) |
+| hnisc | 湖南信息学院健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=158324&enc=b08ae0de35d833ebc04ad7c5604f1b43) |
+| xnec | 咸宁职业技术学院健康打卡（未充分测试） | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100992&enc=bd1883314d3b5f4b36c91dc1907b5c74) |
+| qcuwh | 武汉晴川学院健康打卡（未充分测试） | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e) |
+
+如果你的学校未使用默认健康打卡表单，而使用自定义打卡表，但不在本项目支持列表之内，你可以：
+ - 自己抓包学习通的表单链接得到 `form_id` 和 `enc` ，在本项目的 `config` 文件夹下新建一个 Python 文件，新建一个继承自 `config._Report` 的类，参考 `test.py` 下或其它文件的适配方法，根据实际情况，对你的学校进行适配。测试通过后即可向本项目 `Pull request` 。
+ - 提 Issue 请求适配
+
+本项目支持使用 GitHub Actions 或在自建服务器上使用（阿里云等部分国内云服务IP被超星屏蔽，无法使用），通过使用 `crontab` 来定时开启。考虑到不同学校的打卡时间不一样，若使用 GitHub Actions 运行的，建议修改 `.github/workflows/report.yml` 内的定时时间（时区为UTC时区）；使用自建服务器的也一样，若为海外服务器也请注意服务器所使用的时区。
+
 ### 在 GitHub Actions 上使用
 
 1. `Star`并`Fork`本项目
 
-2. 前往 `Settings`-`Secrets` ， 点击 `New repository secret`
+2. 前往 `Settings`-`Secrets`-`Actions` ， 点击 `New repository secret`
 
 3. 在新建 Secret 的界面上， `Name` 值输入 `USERS` ， `Value` 处输入用户的配置信息，多个用户配置之间使用`英文分号`隔开。
    
@@ -76,7 +95,7 @@ Ver.22.02.08:02
    2,5e58d2264821c69ebcd46c448e7f5fe6
    ```
 
-5. （可选）再添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密。
+5. 再添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密。（可选，推荐设置，否则无法直接查看日志）
 
    这是因为 GitHub Actions 的日志是公开的，设置该 Secret 后会将日志文件用 7z 加密压缩并上传，可在每个 Action 页面的 Artifacts 处下载，使用任意解压软件解压即可查看。
 
@@ -84,7 +103,9 @@ Ver.22.02.08:02
 
 6. Secret 添加完成后，前往项目的 `Actions` 面板，同意开启并进入 Actions 。然后选择 `Health Report` ，点击 `Enable workflow` 开启工作流。此时 Actions 开启成功，可以点击 `Run workflow` 测试填报一次。
 
-7. 当本项目更新时，你所 Fork 的项目不会自动更新。在你的项目主页上点击 `Fetch upstream`-`Fetch and merge`以更新程序。
+7. 当本项目更新时，你所 Fork 的项目不会自动更新。可以选择安装 GitHub Apps 中的 [Pull App](https://github.com/apps/pull) ，保持你的 Fork 始终最新。安装时默认会应用到所有项目，建议手动选择需要应用的项目。注意该 App 会强制覆盖你对 Fork 项目的操作，如果你有改动（例如修改了 `.github/workflows/report.yml` ），请注意备份。
+
+   若不安装，需要手动更新时，在你的项目主页上点击 `Fetch upstream`-`Fetch and merge` 即可更新程序。
 
 ### 在自己的服务器上使用
 
@@ -135,27 +156,13 @@ Ver.22.02.08:02
    ```
    0 7,12,19 * * * root /usr/bin/python3 /root/cx_health_sign/main.py >> /root/cx_health_sign/output.log
    ```
-   请根据实际情况作出修改
+   此仅为演示，请根据实际情况作出修改，例如将时间设置正确，脚本的路径正确
    
    保存文件后执行
    ```shell
    crontab /etc/crontab
    ```
    以应用 crontab 配置
-
-## 支持的学校表单
-| 表单代码 | 名称 | 备注 |
-| :---: | :---: | :---: |
-| test  | 测试用表单 | 一个不限时间和次数的填报表单，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=13243&enc=3a9416c86432c5f667f2b23a88a0123a)
-| default | 学习通默认健康打卡表单 | 绝大部分学校所用，[表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e)
-| nnnu | 南宁师范大学两检 | [早检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99778&enc=5affca1a747445b8d3ec9de92612ecae) [午检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99783&enc=cb9894ce56b7e222cb3eab72d0fed834)
-| hnucc | 湖南城建职业技术学院学生健康信息填报 | [表单主页](https://office.chaoxing.com/front/third/apps/forms/fore/apply?id=86243&enc=de7939f413267efd9a0fd882dca9140b) |
-| swut | 山东外国语职业技术大学健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=139669&enc=d3fd2b1818f116a76aff41eee80ea348) |
-| hnisc | 湖南信息学院健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=158324&enc=b08ae0de35d833ebc04ad7c5604f1b43) |
-
-如果你的学校未使用默认健康打卡表单，而使用自定义打卡表，但不在本项目支持列表之内，你可以：
- - 自己抓包学习通的表单链接得到 `form_id` 和 `enc` ，在本项目的 `config` 文件夹下新建一个 Python 文件，新建一个继承自 `config._Report` 的类，参考 `test.py` 下或其它文件的适配方法，根据实际情况，对你的学校进行适配。测试通过后即可向本项目 `Pull request` 。
- - 提 Issue 请求适配
 
 ## 消息推送介绍
 目前支持以下消息推送服务：

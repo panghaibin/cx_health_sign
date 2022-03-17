@@ -14,7 +14,10 @@ from config.default import DefaultHealthReport
 from config.nnnu import NNNUHealthReport
 from config.hnucc import HNUCCHealthReport
 from config.swut import SWUTHealthReport
+from config.swut_2 import SWUTHealthReportNoon
 from config.hnisc import HNISCHealthReport
+from config.xnec import XNECHealthReport
+from config.qcuwh import QCUWHHealthReport
 from config.test import TestReport
 
 
@@ -33,7 +36,10 @@ class MainHandle(object):
             'nnnu': NNNUHealthReport,
             'hnucc': HNUCCHealthReport,
             'swut': SWUTHealthReport,
+            'swut_2': SWUTHealthReportNoon,
             'hnisc': HNISCHealthReport,
+            'xnec': XNECHealthReport,
+            'qcuwh': QCUWHHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
