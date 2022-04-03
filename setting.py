@@ -93,15 +93,49 @@ class GitHub(object):
     """
 
     def __init__(self):
-        self._users_raw = os.environ['users'].split(';')
+        self._new_users_raw = os.environ.get('new_users', '')
+        self._new_users = self._new_users_raw.replace('；', ';')
+        self._new_users = self._new_users_raw.replace('，', ',')
+        self._new_users = self._new_users.split(';')
+        self._new_global_api_raw = os.environ.get('new_send', '')
+        self._new_global_api_raw = self._new_global_api_raw.replace('，', ',')
+        self._new_global_api_raw = self._new_global_api_raw.split(',')
+
+        self._users_raw = os.environ.get('users', '').split(';')
         self._global_api_raw = os.environ.get('send', '').split(',')
 
+        self._new_users: list = []
+        self._check_new_users()
         self._users: list = []
         self._check_users()
+        if self._new_users:
+            self._users: list = self._new_users
+
         self.user_list: list = []
 
         self.global_api: dict = {}
         self._check_global_api()
+
+    def _check_new_users(self):
+        _new_users = []
+        for new_user_info_raw in self._new_users_raw:
+            # un=123,pw=456,pt=test,si=789,at=1,ak=5;......
+            key_map = {'un': 'username', 'pw': 'password', 'pt': 'post_type', 'si': 'school_id', 'at': 'api_type'}
+            new_user_info = new_user_info_raw.split(',')
+            new_user = {}
+            for new_user_info_item in new_user_info:
+                if '=' not in new_user_info_item:
+                    continue
+                key, value = new_user_info_item.split('=')
+                key = key_map.get(key, '')
+                value = int(value) if key == 'api_type' else value
+                if key != '':
+                    new_user[key] = value
+            _new_users.append(new_user)
+        # remove empty user
+        _new_users = [user for user in _new_users if user != {}]
+        print(_new_users)
+        self._new_users = _new_users
 
     def _check_users(self):
         _users = []
@@ -136,10 +170,30 @@ class GitHub(object):
         return self.user_list
 
     def _check_global_api(self):
-        if len(self._global_api_raw) == 2:
-            self.global_api = dict(
-                api_type=int(self._global_api_raw[0]),
-                api_key=self._global_api_raw[1]
-            )
+        if self._new_global_api_raw:
+            global_api_raw = self._new_global_api_raw
+            new = True
+        else:
+            global_api_raw = self._global_api_raw
+            new = False
+        if len(global_api_raw) == 2:
+            if new:
+                # at=1,ak=5
+                key_map = {'at': 'api_type', 'ak': 'api_key'}
+                global_api = {}
+                for global_api_item in global_api_raw:
+                    if '=' not in global_api_item:
+                        continue
+                    key, value = global_api_item.split('=')
+                    key = key_map.get(key, '')
+                    value = int(value) if key == 'api_type' else value
+                    if key != '':
+                        global_api[key] = value
+                self.global_api = global_api
+            else:
+                self.global_api = dict(
+                    api_type=int(global_api_raw[0]),
+                    api_key=global_api_raw[1]
+                )
         else:
             self.global_api = dict(api_type=0, api_key='')

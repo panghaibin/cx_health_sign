@@ -20,7 +20,9 @@ jobs:
       - name: Start Report
         env:
           users: ${{ secrets.USERS }}
+          new_users: ${{ secrets.NEWUSERS }}
           send: ${{ secrets.SEND }}
+          new_send: ${{ secrets.NEWSEND }}
         if: ${{ env.users != ''}}
         run: |
           python main.py gh > output.log

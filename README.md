@@ -1,8 +1,10 @@
 ![cx_health_sign](https://socialify.git.ci/panghaibin/cx_health_sign/image?description=1&forks=1&issues=1&language=1&stargazers=1)
 
-Ver.22.03.17  更新了部分学校，详见[下方列表](#支持的学校表单)
-
 项目地址：<https://github.com/panghaibin/cx_health_sign>
+
+最近更新日志：Ver.22.04.03  改善 GitHub Secrets 的配置方案
+
+[查看历史更新](CHANGELOG.md)
 
 ## 特色
  - 支持多用户使用
@@ -39,60 +41,62 @@ Ver.22.03.17  更新了部分学校，详见[下方列表](#支持的学校表�
 
 2. 前往 `Settings`-`Secrets`-`Actions` ， 点击 `New repository secret`
 
-3. 在新建 Secret 的界面上， `Name` 值输入 `USERS` ， `Value` 处输入用户的配置信息，多个用户配置之间使用`英文分号`隔开。
+3. 在新建 Secret 的界面上， `Name` 值输入 `NEWUSERS` ， `Value` 处输入用户的配置信息，多个用户配置之间使用分号隔开。
    
-   单个用户的配置信息格式如下（[ ]内为可选参数）：
+   > 在旧版本（1.4.0及以前）中采用的`Name`值为`USERS`，格式也难以阅读。现在的版本`Name`为`NEWUSERS`，并采用如下的便于阅读的设置方案，旧的方案仍然兼容。
+   
+   单个用户的配置信息分别由几对`key=value`组成，格式如下（[ ]内为可选参数）：
    ```
-   username,password,post_type[,school_id,api_type,api_key]
+   un=username,pd=password,pt=post_type[,si=school_id,at=api_type,ak=api_key]
    ```
    
    `username`, `password` 分别是学号和密码
    
    `post_type`是本程序目前支持填报的表单代码，详情见[支持的学校表单](#支持的学校表单)中的[表单代码]一栏
    
-   `school_id`是学校代号，获取方法见[学校id获取](#学校id获取)
+   `school_id`是学校代号（仅在学号登录时需要），获取方法见[学校id获取](#学校id获取)
    
-   `api_type`, `api_key`是消息推送类型代号及密钥，详情见[消息推送介绍](#消息推送介绍)
+   `api_type`, `api_key`是消息推送类型代号及密钥（可选），详情见[消息推送介绍](#消息推送介绍)
    
    示例如下：
-   
-   用户需要消息推送服务，并且使用学号登录：
-   ```
-   20192233,12345Abc,default,209,2,5e58d2264821c69ebcd46c448e7f5fe6
-   ```
-   
-   若用户不使用学号登录，或者不需要使用消息推送服务，则**按照上述格式的顺序**，仅保留需要的参数即可
 
-   例如用户使用手机号而不是学号登录，需要消息推送服务：
-   
-   ```
-   13878000000,5678Zyx,default,2,46d002ca1ed0c82e1c251a9e5893cd62
-   ```
-   
-   使用手机号登录，仅需要基础功能：
+   使用手机号登录，表单代码为`nnnu`，不需要消息推送，仅需要基础填报功能：
 
    ```
-   18866000000,8899Qwe,nnnu
+   un=138xxxx,pw=123xxx,pt=nnnu
    ```
    
-   要注意不能以`,`作为末尾
-
-   多用户时，每个用户的配置信息用英文分号`;`间隔：
+   使用手机号登录，表单代码为`default`，需要消息推送服务：
+   ```
+   un=139xxxx,pw=567yyy,pt=default,at=2,ak=xxxx
+   ```
+   
+   使用学号登录（查询得到学校代码为`209`），表单代码为`default`，需要消息推送服务：
 
    ```
-   20192233,12345Abc,default,209,2,5e58d2264821c69ebcd46c448e7f5fe6;13878000000,5678Zyx,default,2,46d002ca1ed0c82e1c251a9e5893cd62;18866000000,8899Qwe,nnnu
+   un=2019xxxx,pw=789zzz,pt=default,si=209,at=2,ak=xxxx
+   ```
+   
+   以上几个`key=value`对的顺序可以交换，要注意末尾不能是`,`
+
+   为多个用户设置时，每个用户的配置信息之间，用分号间隔。例如上面三个例子合在一起时：
+
+   ```
+   un=138xxxx,pw=123xxx,pt=nnnu;un=139xxxx,pw=567yyy,pt=default,at=2,ak=xxxx;un=2019xxxx,pw=789zzz,pt=default,si=209,at=2,ak=xxxx
    ```
 
-   同样注意末尾不需要有分号`;`  
+   同样注意末尾不需要有分号`;`
 
    完成后点击`Add secret`保存该 Secret
    
-4. （可选）用同样的方法添加一个名为 `SEND` 的 Secret ，用于将所有用户的填报结果推送给管理员。
+4. （可选）用同样的方法添加一个名为 `NEWSEND` 的 Secret ，用于将所有用户的填报结果推送给管理员。
 
-   格式为`api_type,api_key`，例如
+   > 在旧版本（1.4.0及以前）中采用的`Name`值为`SEND`，格式也难以阅读。现在的版本`Name`为`NEWSEND`，并采用如下的便于阅读的设置方案，旧的方案仍然兼容。
+
+   格式为`ai=api_type,ak=api_key`，例如
 
    ```
-   2,5e58d2264821c69ebcd46c448e7f5fe6
+   at=2,ak=xxxx
    ```
 
 5. 再添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密。（可选，推荐设置，否则无法直接查看日志）
