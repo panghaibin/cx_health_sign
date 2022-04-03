@@ -15,7 +15,7 @@ jobs:
           new_users: ${{ secrets.NEWUSERS }}
         run: |
           echo "Checking Secrets"
-          if [[ $users == '' || $new_users == '' ]]; then
+          if [[ $users == '' && $new_users == '' ]]; then
             echo "未正确设置Secrets，请阅读README.md"
             exit 1
           fi
@@ -37,9 +37,9 @@ jobs:
           log_password: ${{ secrets.LOGPASS }}
         run: |
           if [[ $log_password == '' ]]; then
-            python main.py gh
+            python -u main.py gh
           else
-            python main.py gh > output.log
+            python -u main.py gh > output.log
           fi
       - name: Encrypt Log
         env:
