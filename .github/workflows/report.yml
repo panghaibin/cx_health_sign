@@ -23,9 +23,13 @@ jobs:
           new_users: ${{ secrets.NEWUSERS }}
           send: ${{ secrets.SEND }}
           new_send: ${{ secrets.NEWSEND }}
+          log_password: ${{ secrets.LOGPASS }}
         if: ${{ env.users != ''}}
         run: |
           python main.py gh > output.log
+          if log_password == ''; then
+            cat output.log
+          fi
       - name: Encrypt Log
         env:
           users: ${{ secrets.USERS }}

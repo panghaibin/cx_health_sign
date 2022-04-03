@@ -23,7 +23,7 @@ class _NNNU0HealthReport(_Report):
                 today = Time().today
                 # 防止重复填报
                 if f['fields'][0]['values'][0]['val'] == today:
-                    self._result = '%s今日%s已填报过%s' % (self._username, today, self._reporter_name)
+                    self._result = '%s今日%s已填报过%s' % (self._username_masked, today, self._reporter_name)
                     raise Exception(self._result)
                 else:
                     f['fields'][0]['values'][0]['val'] = today
@@ -118,7 +118,7 @@ else:
     class NNNUHealthReport(_NNNU0HealthReport):
         def __init__(self, username, password, school_id=''):
             super().__init__(username, password, school_id)
-            self._result = '%s填报%s不在填报时间' % (self._username, self._reporter_name)
+            self._result = '%s填报%s不在填报时间' % (self._username_masked, self._reporter_name)
 
         def report(self):
             raise Exception(self._result)

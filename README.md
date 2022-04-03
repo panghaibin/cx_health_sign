@@ -99,11 +99,11 @@
    at=2,ak=xxxx
    ```
 
-5. 再添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密。（可选，推荐设置，否则无法直接查看日志）
+5. （可选）再添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密
 
-   这是因为 GitHub Actions 的日志是公开的，设置该 Secret 后会将日志文件用 7z 加密压缩并上传，可在每个 Action 页面的 Artifacts 处下载，使用任意解压软件解压即可查看。
+   设置该 Secret 后会将日志文件用 7z 加密压缩并上传，可在每个 Action 页面的 Artifacts 处下载，使用任意解压软件解压即可查看。
 
-   若不设置该 Secret 则不会保留日志，也无法查看，除非设置了消息推送可以查看填报结果。
+   若不设置该 Secret 则日志直接输出在 Actions 的执行结果页
 
 6. Secret 添加完成后，前往项目的 `Actions` 面板，同意开启并进入 Actions 。然后选择 `Health Report` ，点击 `Enable workflow` 开启工作流。此时 Actions 开启成功，可以点击 `Run workflow` 测试填报一次。
 

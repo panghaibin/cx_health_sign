@@ -19,6 +19,7 @@ class _Report(object):
         """
 
         self._username = username
+        self._username_masked = '***' + username[-3:]
         self._password = password
         self._school_id = school_id
 
@@ -66,12 +67,12 @@ class _Report(object):
         resp = self._session.get(login_api, params=params)
 
         if resp.status_code == 403:
-            self._result = "%s登录得到403，登录请求被拒绝" % self._username
+            self._result = "%s登录得到403，登录请求被拒绝" % self._username_masked
             raise Exception(self._result)
 
         data = json.loads(resp.text)
         if not data['result']:
-            self._result = '%s登录失败' % self._username
+            self._result = '%s登录失败' % self._username_masked
             raise Exception(self._result)
 
         Session(self._username, self._session).save_session()
@@ -92,7 +93,7 @@ class _Report(object):
         resp = self._session.get(api, params=params)
         raw_data = json.loads(resp.text)
         if not raw_data['data']:
-            self._result = '%s获取上次%s提交数据为空！' % (self._username, self._reporter_name)
+            self._result = '%s获取上次%s提交数据为空！' % (self._username_masked, self._reporter_name)
             raise Exception(self._result)
         form_data = raw_data['data']['formsUser']['formData']
         d = {
@@ -128,7 +129,7 @@ class _Report(object):
             self._check_code = code[0]
             return self._check_code
         else:
-            self._result = "%s获取%s校验码失败" % (self._username, self._reporter_name)
+            self._result = "%s获取%s校验码失败" % (self._username_masked, self._reporter_name)
             raise Exception(self._result)
 
     def _today_report(self) -> dict:
@@ -157,9 +158,9 @@ class _Report(object):
         self._get_check_code()
         report_result = self._today_report()
         if report_result['success']:
-            self._result = '%s填报%s(id=%s)成功' % (self._username, self._reporter_name, self._form_id)
+            self._result = '%s填报%s(id=%s)成功' % (self._username_masked, self._reporter_name, self._form_id)
         else:
-            self._result = '%s填报%s(id=%s)失败' % (self._username, self._reporter_name, self._form_id)
+            self._result = '%s填报%s(id=%s)失败' % (self._username_masked, self._reporter_name, self._form_id)
             self._result += '，返回报错：%s' % report_result['msg']
         return self._result
 

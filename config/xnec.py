@@ -29,7 +29,7 @@ class XNECHealthReport(_Report):
             elif f['id'] == self._day_id:
                 today = Time().today
                 if f['fields'][0]['values'][0]['val'].startswith(today):
-                    self._result = '%s今日%s已填报过%s' % (self._username, today, self._reporter_name)
+                    self._result = '%s今日%s已填报过%s' % (self._username_masked, today, self._reporter_name)
                     raise Exception(self._result)
                 else:
                     f['fields'][0]['values'][0]['val'] = today
