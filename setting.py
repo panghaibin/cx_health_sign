@@ -94,9 +94,9 @@ class GitHub(object):
 
     def __init__(self):
         self._new_users_raw = os.environ.get('new_users', '')
-        self._new_users = self._new_users_raw.replace('；', ';')
-        self._new_users = self._new_users_raw.replace('，', ',')
-        self._new_users = self._new_users.split(';')
+        self._new_users_raw = self._new_users_raw.replace('；', ';')
+        self._new_users_raw = self._new_users_raw.replace('，', ',')
+        self._new_users_raw = self._new_users_raw.split(';')
         self._new_global_api_raw = os.environ.get('new_send', '')
         self._new_global_api_raw = self._new_global_api_raw.replace('，', ',')
         self._new_global_api_raw = self._new_global_api_raw.split(',')
@@ -134,7 +134,6 @@ class GitHub(object):
             _new_users.append(new_user)
         # remove empty user
         _new_users = [user for user in _new_users if user != {}]
-        print(_new_users)
         self._new_users = _new_users
 
     def _check_users(self):
