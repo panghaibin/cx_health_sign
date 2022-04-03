@@ -4,9 +4,10 @@ global_send:
 #    0: 未设置
 #    1: 方糖气球 https://sct.ftqq.com/
 #    2: 推送加 https://www.pushplus.plus/
-  api_type: 2
+#    3: 推送加（hxtrip域名下） https://pushplus.hxtrip.com/
+  api_type: 0
 #  消息发送的 key
-  api_key: "3ec73b3c4ffb496a8ba59b7d21f96859"
+  api_key: ""
 
 
 users:
@@ -14,7 +15,8 @@ users:
   "username_1":
 #    密码，必填
     passwprd: "password_here"
-#    此处填写需要报送的配置类型，必填 目前可选 default / nnnu / test
+#    此处填写需要报送的配置类型，必填 可选值参见 README.md
+#    如果需要报送多个类型，则用 | 分隔，如： swut|swut_2
     post_type: "default"
 #    学校 id ，选填 若使用学号登录则必填
     school_id: ''

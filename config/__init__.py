@@ -19,7 +19,7 @@ class _Report(object):
         """
 
         self._username = username
-        self._username_masked = '***' + username[-3:]
+        self._username_masked = '*' * (len(username) - 3) + username[-3:]
         self._password = password
         self._school_id = school_id
 

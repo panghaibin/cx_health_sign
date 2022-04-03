@@ -4,16 +4,18 @@
 
 最近更新日志：
 
-[22.04.03] - 1.4.1
+[2.0.0] - 2022-04-04 
 
-改善 GitHub Secrets 的配置方案
+现支持单用户同时填报多个表单，详见下文；改善 GitHub Secrets 的配置方案
 
 ......
 
-[查看历史更新](CHANGELOG.md)
+[查看全部更新日志](CHANGELOG.md)
 
 ## 特色
-- 支持多用户使用
+- 支持在 GitHub Actions 上使用，以及自建服务器、PC等上使用
+
+- 支持为多用户填报，单用户可填报多个表单，适配学校多个表单的情况
 
 - 支持默认表单模板或学校自定义模板
 
@@ -35,13 +37,13 @@
 | xnec | 咸宁职业技术学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100992&enc=bd1883314d3b5f4b36c91dc1907b5c74) |
 | qcuwh | 武汉晴川学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e) |
 
-如果你的学校未使用默认健康打卡表单，而使用自定义打卡表，但不在本项目支持列表之内，你可以：
+如果你的学校未使用默认健康打卡表单，而使用自定义打卡表单，但不在本项目支持列表之内，你可以：
 - 自己抓包学习通的表单链接得到 `form_id` 和 `enc` ，在本项目的 `config` 文件夹下新建一个 Python 文件，新建一个继承自 `config._Report` 的类，参考 `test.py` 下或其它文件的适配方法，根据实际情况，对你的学校进行适配。测试通过后即可向本项目 `Pull request` 。
-- 提 Issue 请求适配
+- 或者，提 Issue 请求适配
 
-本项目支持使用 GitHub Actions 或在自建服务器上使用（阿里云等部分国内云服务IP被超星屏蔽，无法使用），通过使用 `crontab` 来定时开启。考虑到不同学校的打卡时间不一样，若使用 GitHub Actions 运行的，建议修改 `.github/workflows/report.yml` 内的定时时间（时区为UTC时区）；使用自建服务器的也一样，若为海外服务器也请注意服务器所使用的时区。
+本项目支持使用 GitHub Actions 或在自建服务器上使用（阿里云等部分国内云服务IP可能被超星屏蔽，无法使用），通过使用 `crontab` 来定时开启。考虑到不同学校的打卡时间不一样，若使用 GitHub Actions 运行的，建议修改 `.github/workflows/report.yml` 内的定时时间（时区为**UTC时区**）；使用自建服务器的也一样，若为海外服务器也请注意服务器所使用的时区。
 
-### 在 GitHub Actions 上使用
+### 方法一  在 GitHub Actions 上使用
 
 1. `Star`并`Fork`本项目
 
@@ -58,7 +60,7 @@
 
     `username`, `password` 分别是学号和密码
 
-    `post_type`是本程序目前支持填报的表单代码，详情见[支持的学校表单](#支持的学校表单)中的[表单代码]一栏
+    `post_type`是本程序目前支持填报的表单代码，详情见[支持的学校表单](#支持的学校表单)中的[表单代码]一栏。如果需要同时填报多个表单，请使用`|`符号连接不同的表单。如 `swut|swut_2`
 
     `school_id`是学校代号（仅在学号登录时需要），获取方法见[学校id获取](#学校id获取)
 
@@ -72,9 +74,9 @@
     un=138xxxx,pw=123xxx,pt=nnnu
     ```
 
-    使用手机号登录，表单代码为`default`，需要消息推送服务：
+    使用手机号登录，需要同时使用表单代码`swut`和`swut_2`，需要消息推送服务：
     ```
-    un=139xxxx,pw=567yyy,pt=default,at=2,ak=xxxx
+    un=139xxxx,pw=567yyy,pt=swut|swut_2,at=2,ak=xxxx
     ```
 
     使用学号登录（查询得到学校代码为`209`），表单代码为`default`，需要消息推送服务：
@@ -88,7 +90,7 @@
     为多个用户设置时，每个用户的配置信息之间，用分号间隔。例如上面三个例子合在一起时：
 
     ```
-    un=138xxxx,pw=123xxx,pt=nnnu;un=139xxxx,pw=567yyy,pt=default,at=2,ak=xxxx;un=2019xxxx,pw=789zzz,pt=default,si=209,at=2,ak=xxxx
+    un=138xxxx,pw=123xxx,pt=nnnu;un=139xxxx,pw=567yyy,pt=swut|swut_2,at=2,ak=xxxx;un=2019xxxx,pw=789zzz,pt=default,si=209,at=2,ak=xxxx
     ```
 
     同样注意末尾不需要有分号`;`
@@ -105,19 +107,23 @@
     at=2,ak=xxxx
     ```
 
-5. （可选）再添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密
+5. （可选）添加一个名为 `LOGPASS` 的 Secret ，用于将 GitHub Actions 的执行结果日志加密
 
     设置该 Secret 后会将日志文件用 7z 加密压缩并上传，可在每个 Action 页面的 Artifacts 处下载，使用任意解压软件解压即可查看。
 
     若不设置该 Secret 则日志直接输出在 Actions 的执行结果页
 
-6. Secret 添加完成后，前往项目的 `Actions` 面板，同意开启并进入 Actions 。然后选择 `Health Report` ，点击 `Enable workflow` 开启工作流。此时 Actions 开启成功，可以点击 `Run workflow` 测试填报一次。
+6. （可选）添加一个名为 `SLEEPTIME` 的 Secret ，以在填报时控制休眠时间
 
-7. 当本项目更新时，你所 Fork 的项目不会自动更新。可以选择安装 GitHub Apps 中的 [Pull App](https://github.com/apps/pull) ，保持你的 Fork 始终最新。安装时默认会应用到所有项目，建议手动选择需要应用的项目。注意该 App 会强制覆盖你对 Fork 项目的操作，如果你有改动（例如修改了 `.github/workflows/report.yml` ），请注意备份。
+    可以设置为一个数字，每次填报前即会休眠该秒数；或者设置值为 `random` ，每次会随机休眠 30 ~ 360 秒。若都不设置默认休眠 5 秒
+
+7. Secret 添加完成后，前往项目的 `Actions` 面板，同意开启并进入 Actions 。然后选择 `Health Report` ，点击 `Enable workflow` 开启工作流。此时 Actions 开启成功，可以点击 `Run workflow` 测试填报一次。
+
+8. 当本项目更新时，你所 Fork 的项目不会自动更新。可以选择安装 GitHub Apps 中的 [Pull App](https://github.com/apps/pull) ，保持你的 Fork 始终最新。安装时默认会应用到所有项目，建议手动选择需要应用的项目。注意该 App 会强制覆盖你对 Fork 项目的操作，如果你有改动（例如修改了 `.github/workflows/report.yml` ），请注意备份。
 
     若不安装，需要手动更新时，在你的项目主页上点击 `Fetch upstream`-`Fetch and merge` 即可更新程序。
 
-### 在自己的服务器上使用
+### 方法二  在自己的服务器上使用
 
 1. 克隆本项目，进入项目文件夹
     ```shell
@@ -166,7 +172,15 @@
     ```
     0 7,12,19 * * * root /usr/bin/python3 /root/cx_health_sign/main.py >> /root/cx_health_sign/output.log
     ```
-    此仅为演示，请根据实际情况作出修改，例如将时间设置正确，脚本的路径正确
+    此仅为示意，请根据实际情况作出修改，例如将时间设置正确，脚本的路径正确
+
+    如果需要设置每次填报时的休眠时间，如每次休眠 30s：
+
+    ```
+    0 7,12,19 * * * root export sleep_time=30; /usr/bin/python3 /root/cx_health_sign/main.py >> /root/cx_health_sign/output.log
+    ```
+   
+    如果需要随机休眠30~360s，则设置为 `sleep_time=random`
 
     保存文件后执行
     ```shell

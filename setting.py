@@ -51,7 +51,7 @@ class Setting(object):
                 user = {
                     'username': username,
                     'password': users[username]['password'],
-                    'post_type': users[username]['post_type'],
+                    'post_type': users[username]['post_type'].split('|'),
                     'school_id': users[username].get('school_id', ''),
                     'api_type': users[username].get('api_type', 0),
                     'api_key': users[username].get('api_key', '')
@@ -60,7 +60,8 @@ class Setting(object):
         self.user_list = user_list
         return self.user_list
 
-    def add_user(self, username, password, post_type, school_id='', api_type=0, api_key='') -> bool:
+    def add_user(self, username: str, password: str, post_type: list, school_id='', api_type=0, api_key='') -> bool:
+        post_type = '|'.join(post_type)
         user_info = dict(
             password=password, post_type=post_type, school_id=school_id,
             api_type=api_type, api_key=api_key
@@ -129,6 +130,7 @@ class GitHub(object):
                 key, value = new_user_info_item.split('=')
                 key = key_map.get(key, '')
                 value = int(value) if key == 'api_type' else value
+                value = value.split('|') if key == 'post_type' else value
                 if key != '':
                     new_user[key] = value
             _new_users.append(new_user)
@@ -141,16 +143,16 @@ class GitHub(object):
         for user_info_raw in self._users_raw:
             user_info = user_info_raw.split(',')
             if len(user_info) == 3:
-                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2].split('|'),
                             school_id='', api_type=0, api_key='')
             elif len(user_info) == 4:
-                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2].split('|'),
                             school_id=user_info[3], api_type=0, api_key='')
             elif len(user_info) == 5:
-                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2].split('|'),
                             school_id='', api_type=int(user_info[3]), api_key=user_info[4])
             elif len(user_info) == 6:
-                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2],
+                user = dict(username=user_info[0], password=user_info[1], post_type=user_info[2].split('|'),
                             school_id=user_info[3], api_type=int(user_info[4]), api_key=user_info[5])
             else:
                 continue

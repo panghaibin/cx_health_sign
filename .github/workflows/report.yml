@@ -35,6 +35,7 @@ jobs:
           send: ${{ secrets.SEND }}
           new_send: ${{ secrets.NEWSEND }}
           log_password: ${{ secrets.LOGPASS }}
+          sleep_time: ${{ secrets.SLEEPTIME }}
         run: |
           if [[ $log_password == '' ]]; then
             python -u main.py gh

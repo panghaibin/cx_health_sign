@@ -57,8 +57,11 @@ class MainHandle(object):
         """
         os_sleep = os.getenv('sleep_time', '5')
         if os_sleep == 'random':
-            sleep(random.randint(30, 360))
+            sleep_time = random.randint(30, 360)
+            print(f'休眠 {sleep_time} 秒')
+            sleep(sleep_time)
         else:
+            print(f'休眠 {os_sleep} 秒')
             sleep(int(os_sleep))
 
     def main(self):
@@ -71,6 +74,7 @@ class MainHandle(object):
             print('用户数量为0，开始添加用户')
             self.add_user()
             print('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
+            print('开始填报测试')
         # 填报全部用户
         self.report_all()
         # 发送全局消息
@@ -85,21 +89,22 @@ class MainHandle(object):
 
     def report_all(self):
         for user in self._users:
-            self._sleep()
-            try:
-                post_type = user['post_type']
-                r = self._reporters[post_type](user['username'], user['password'], user.get('school_id', ''))
-                t = r.report()
-                self.report_results.append(t)
-            except Exception as e:
-                logging.exception(e)
-                msg = traceback.format_exc()
-                self.report_results.append(str(msg))
-            if user.get('api_type', 0) != 0:
-                send = SendMsg(user, result=self.report_results[-1])
-                self.send_results.append(send.send_result)
-            else:
-                self.send_results.append('用户未指定消息推送服务')
+            post_types = user['post_type']
+            for post_type in post_types:
+                self._sleep()
+                try:
+                    r = self._reporters[post_type](user['username'], user['password'], user.get('school_id', ''))
+                    t = r.report()
+                    self.report_results.append(t)
+                except Exception as e:
+                    logging.exception(e)
+                    msg = traceback.format_exc()
+                    self.report_results.append(str(msg))
+                if user.get('api_type', 0) != 0:
+                    send = SendMsg(user, result=self.report_results[-1])
+                    self.send_results.append(send.send_result)
+                else:
+                    self.send_results.append('用户未指定消息推送服务')
 
     def global_send(self) -> str:
         api = {
@@ -150,8 +155,16 @@ class MainHandle(object):
 
         print('输入需要打卡的配置类型，必填')
         report_types = list(self._reporters.keys())
-        post_type = self._input('请选择: ', message_list=report_types)
-        post_type = report_types[post_type]
+        post_type = []
+        while True:
+            input_value = self._input('请选择: ', message_list=report_types)
+            input_value = report_types[input_value]
+            post_type.append(input_value)
+            print('是否继续添加更多表单？')
+            to_exit = self._input('请选择：', message_list=['是', '否'])
+            if to_exit == 1:
+                break
+        post_type = list(set(post_type))
 
         print('输入学校id，选填 若使用学号登录则必填')
         school_id = self._input('请输入: ', is_require=False)

@@ -121,4 +121,4 @@ else:
             self._result = '%s填报%s不在填报时间' % (self._username_masked, self._reporter_name)
 
         def report(self):
-            raise Exception(self._result)
+            return self._result
