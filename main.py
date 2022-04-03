@@ -58,11 +58,13 @@ class MainHandle(object):
         os_sleep = os.getenv('sleep_time', '5')
         if os_sleep == 'random':
             sleep_time = random.randint(30, 360)
-            print(f'休眠 {sleep_time} 秒')
-            sleep(sleep_time)
         else:
-            print(f'休眠 {os_sleep} 秒')
-            sleep(int(os_sleep))
+            sleep_time = int(os_sleep)
+        print('休眠 {}s'.format(sleep_time))
+        for i in range(sleep_time, 0, -10):
+            print("休眠剩余%s秒" % i)
+            sleep(10 if i > 10 else i)
+        print("休眠结束")
 
     def main(self):
         setting = Setting()

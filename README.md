@@ -115,7 +115,7 @@
 
 6. （可选）添加一个名为 `SLEEPTIME` 的 Secret ，以在填报时控制休眠时间
 
-    可以设置为一个数字，每次填报前即会休眠该秒数；或者设置值为 `random` ，每次会随机休眠 30 ~ 360 秒。若都不设置默认休眠 5 秒
+    设置值为 `random` ，每次会随机休眠 30 ~ 360 秒，若不设置默认休眠 5 秒。
 
 7. Secret 添加完成后，前往项目的 `Actions` 面板，同意开启并进入 Actions 。然后选择 `Health Report` ，点击 `Enable workflow` 开启工作流。此时 Actions 开启成功，可以点击 `Run workflow` 测试填报一次。
 
