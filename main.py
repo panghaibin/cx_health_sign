@@ -283,7 +283,7 @@ class SendMsg(object):
         self.result_list = result_list
         self.title = result_list[0] if not result else result
         self.title = self.title.replace("\n", '<br>')[:99]
-        self.desp: str = Time().now_time.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
+        self.desp: str = Time().datetime.strftime("%Y-%m-%d %H:%M:%S") + "\n\n"
         self.desp += "\n\n".join(result_list) if not result else result
         # 添加随机字符以确保提交成功
         self.desp += "\n\n" + str(random.randint(0, 100000))

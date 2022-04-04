@@ -11,6 +11,8 @@ class _NNNU0HealthReport(_Report):
     def __init__(self, username, password, school_id=''):
         _Report.__init__(self, username, password, school_id)
 
+        self._t = Time()
+
         self._day_id = -1
         self._temperature_id = -1
         self._options_ids = []
@@ -20,7 +22,7 @@ class _NNNU0HealthReport(_Report):
         form_data = self._last_form_data
         for f in form_data:
             if f['id'] == self._day_id:
-                today = Time().today
+                today = self._t.today
                 # 防止重复填报
                 if f['fields'][0]['values'][0]['val'] == today:
                     self._result = '%s今日%s已填报过%s' % (self._username_masked, today, self._reporter_name)

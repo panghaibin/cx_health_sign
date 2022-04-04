@@ -10,6 +10,7 @@ class HNISCHealthReport(_Report):
         self._form_id = '158324'
         self._enc = 'b08ae0de35d833ebc04ad7c5604f1b43'
         self._reporter_name = 'HNISC健康打卡'
+        self._t = Time()
 
         self._temperature_id = 7
         self._report_time_id = 15
@@ -24,8 +25,8 @@ class HNISCHealthReport(_Report):
                 temperature = self._random_temperature()
                 f['fields'][0]['values'][0]['val'] = temperature
             elif f['id'] == self._report_time_id:
-                today = Time().today
-                report_time = Time().now_time.strftime('%Y-%m-%d %H:%M')
+                today = self._t.today
+                report_time = self._t.report_time
                 if f['fields'][0]['values'][0]['val'].startswith(today):
                     self._result = '%s今日%s已填报过%s' % (self._username_masked, today, self._reporter_name)
                     raise Exception(self._result)
