@@ -28,7 +28,7 @@
 | 表单代码 | 名称 | 备注 |
 | :---: | :---: | :---: |
 | test  | 测试用表单，不限填报时间和次数 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=13243&enc=3a9416c86432c5f667f2b23a88a0123a)
-| default | 学习通默认健康打卡表单，大部分学校采用 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e)
+| default | 默认健康打卡表单 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e)
 | nnnu | 南宁师范大学 两检 | [早检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99778&enc=5affca1a747445b8d3ec9de92612ecae) [午检表单](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=99783&enc=cb9894ce56b7e222cb3eab72d0fed834)
 | hnucc | 湖南城建职业技术学院 学生健康信息填报 | [表单主页](https://office.chaoxing.com/front/third/apps/forms/fore/apply?id=86243&enc=de7939f413267efd9a0fd882dca9140b) |
 | swut | 山东外国语职业技术大学 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=139669&enc=d3fd2b1818f116a76aff41eee80ea348) |
@@ -174,13 +174,13 @@
     ```
     此仅为示意，请根据实际情况作出修改，例如将时间设置正确，脚本的路径正确
 
-    如果需要设置每次填报时的休眠时间，如每次休眠 30s：
+    程序在填报时每次填报默认休眠 5s，如果需要自定义休眠时间，如每次休眠 30s：
 
     ```
-    0 7,12,19 * * * root export sleep_time=30; /usr/bin/python3 /root/cx_health_sign/main.py >> /root/cx_health_sign/output.log
+    0 7,12,19 * * * root export sleep_time=30 && /usr/bin/python3 /root/cx_health_sign/main.py >> /root/cx_health_sign/output.log
     ```
    
-    如果需要随机休眠30~360s，则设置为 `sleep_time=random`
+    另外还支持随机休眠30~360s，设置为 `sleep_time=random` 即可
 
     保存文件后执行
     ```shell
