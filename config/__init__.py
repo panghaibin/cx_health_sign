@@ -17,6 +17,7 @@ class _Report(object):
         :params password: 密码
         :params school_id: 学校代码，使用学号登录才需填写
         """
+        self._t = Time()
 
         self._username = username
         self._username_masked = '*' * (len(username) - 3) + username[-3:]
@@ -174,6 +175,7 @@ class Time(object):
         self.datetime: datetime.datetime = self._get_now_time()
         self.today: str = self.datetime.strftime('%Y-%m-%d')
         self.report_time: str = self.datetime.strftime("%Y-%m-%d %H:%M")
+        self.report_time_sec: str = self.datetime.strftime("%Y-%m-%d %H:%M:%S")
         self.hour: str = self.datetime.strftime("%H")
         self.minute: str = self.datetime.strftime("%M")
 

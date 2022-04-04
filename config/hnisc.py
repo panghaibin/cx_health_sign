@@ -1,6 +1,5 @@
 # -*- coding: utf8 -*-
 from config import _Report
-from config import Time
 
 
 class HNISCHealthReport(_Report):
@@ -10,7 +9,6 @@ class HNISCHealthReport(_Report):
         self._form_id = '158324'
         self._enc = 'b08ae0de35d833ebc04ad7c5604f1b43'
         self._reporter_name = 'HNISC健康打卡'
-        self._t = Time()
 
         self._temperature_id = 7
         self._report_time_id = 15

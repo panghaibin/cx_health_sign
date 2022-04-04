@@ -1,6 +1,5 @@
 # -*- coding: utf8 -*-
 from config import _Report
-from config import Time
 
 
 class XNECHealthReport(_Report):
@@ -14,7 +13,6 @@ class XNECHealthReport(_Report):
         self._form_id = '100992'
         self._enc = 'bd1883314d3b5f4b36c91dc1907b5c74'
         self._reporter_name = 'XNEC健康打卡'
-        self._t = Time()
 
         self._day_id = 21
         self._report_time_id = 29

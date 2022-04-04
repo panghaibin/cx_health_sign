@@ -11,8 +11,6 @@ class _NNNU0HealthReport(_Report):
     def __init__(self, username, password, school_id=''):
         _Report.__init__(self, username, password, school_id)
 
-        self._t = Time()
-
         self._day_id = -1
         self._temperature_id = -1
         self._options_ids = []

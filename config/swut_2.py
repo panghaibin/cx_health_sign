@@ -1,6 +1,5 @@
 # -*- coding: utf8 -*-
 from config import _Report
-from config import Time
 
 
 class SWUTHealthReportNoon(_Report):
@@ -31,7 +30,7 @@ class SWUTHealthReportNoon(_Report):
                     if f['fields'][0]['values'][0]['val'] == option['title']:
                         option['checked'] = True
             elif f['id'] == self._day_id:
-                today = Time().today
+                today = self._t.today
                 f['fields'][0]['values'][0]['val'] = today
 
         self._today_form_data = form_data
