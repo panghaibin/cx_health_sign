@@ -62,7 +62,7 @@
     un=username,pd=password,pt=post_type[,si=school_id,at=api_type,ak=api_key]
     ```
 
-    `username`, `password` 分别是学号和密码
+    `username`, `password` 分别是用户名（学号或手机号）和密码
 
     `post_type`是本程序目前支持填报的表单代码，详情见[支持的学校表单](#支持的学校表单)中的[表单代码]一栏。如果需要同时填报多个表单，请使用`|`符号连接不同的表单。如 `swut|swut_2`
 
