@@ -6,9 +6,15 @@
 
 最近更新日志：
 
-[2.1.0] - 2022-04-05
+[2.2.0] - 2022-04-10
 
-新增自助适配健康填报表单功能；支持单用户同时填报多个表单；改善 GitHub Secrets 的配置方案
+适配 河北艺术职业学院 健康打卡
+
+新增自助适配健康填报表单功能
+
+支持单用户同时填报多个表单
+
+改善 GitHub Secrets 的配置方案
 
 ......
 
@@ -27,7 +33,6 @@
 
 - 支持将所有打卡结果推送给指定的一人
 
-## 开始使用
 ## 支持的学校表单
 | 表单代码 | 名称 | 备注 |
 | :---: | :---: | :---: |
@@ -40,6 +45,7 @@
 | hnisc | 湖南信息学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=158324&enc=b08ae0de35d833ebc04ad7c5604f1b43) |
 | xnec | 咸宁职业技术学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100992&enc=bd1883314d3b5f4b36c91dc1907b5c74) |
 | qcuwh | 武汉晴川学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e) |
+| hebart | 河北艺术职业学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=886&enc=c8f7d4f5599544933f7c222b6b44e5c4) |
 
 如果你的学校未使用默认健康打卡表单，而使用自定义打卡表单，但不在本项目支持列表之内，你可以：
 - 自己抓包学习通的表单链接得到 `form id` 和 `enc` ，然后即可自助适配，详细步骤见 [学习通健康打卡表单自适配指北](https://hbte.ch/1968.html) 。适配好并测试通过后，即可向本项目 `Pull Request` 。
@@ -47,6 +53,7 @@
 
 本项目支持使用 GitHub Actions 或在自建服务器上使用（阿里云等部分国内云服务IP可能被超星屏蔽，无法使用），通过使用 `crontab` 来定时开启。考虑到不同学校的打卡时间不一样，若使用 GitHub Actions 运行的，建议修改 `.github/workflows/report.yml` 内的定时时间（时区为**UTC时区**）；使用自建服务器的也一样，若为海外服务器也请注意服务器所使用的时区。
 
+## 开始使用
 ### 方法一  在 GitHub Actions 上使用
 
 1. `Star`并`Fork`本项目

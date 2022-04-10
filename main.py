@@ -18,6 +18,7 @@ from config.swut_2 import SWUTHealthReportNoon
 from config.hnisc import HNISCHealthReport
 from config.xnec import XNECHealthReport
 from config.qcuwh import QCUWHHealthReport
+from config.hebart import HEBARTHealthReport
 from config.test import TestReport
 
 
@@ -40,6 +41,7 @@ class MainHandle(object):
             'hnisc': HNISCHealthReport,
             'xnec': XNECHealthReport,
             'qcuwh': QCUWHHealthReport,
+            'hebart': HEBARTHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
