@@ -59,7 +59,8 @@ class MainHandle(object):
         休眠函数，多个用户填报时，防止被封
         通过设置环境变量控制，默认 5s
         """
-        os_sleep = os.getenv('sleep_time', '5')
+        os_sleep = os.getenv('sleep_time', '')
+        os_sleep = 5 if os_sleep == '' else os_sleep
         if os_sleep == 'random':
             sleep_time = random.randint(30, 360)
         else:
