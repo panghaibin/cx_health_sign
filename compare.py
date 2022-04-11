@@ -28,7 +28,7 @@ class Compare:
         isShow_ids = []
         hasAuthority_ids = []
         options_ids = []
-        temperature_id = -1
+        temperature_ids = []
         day_id = -1
         report_time_id = -1
 
@@ -44,7 +44,7 @@ class Compare:
                 pass
             try:
                 if '体温' in p_item['fields'][0]['label']:
-                    temperature_id = p_item['id']
+                    temperature_ids.append(p_item['id'])
             except KeyError:
                 pass
             try:
@@ -61,7 +61,7 @@ class Compare:
         print('# 变量值为 -1 或者 [] 的表示没有找到对应的id，若确认表单中没有这些变量，则不影响使用')
         print('self._day_id =', day_id)
         print('self._report_time_id =', report_time_id)
-        print('self._temperature_id =', temperature_id)
+        print('self._temperature_ids =', temperature_ids)
         print('self._options_ids =', options_ids)
         print('self._hasAuthority_ids =', hasAuthority_ids)
         print('self._isShow_ids =', isShow_ids)

@@ -23,7 +23,7 @@ class ExampleHealthReport(_Report):
         # 对应打卡时的时间的id，格式 yyyy-MM-dd HH:mm
         self._report_time_id = -1
         # 对应打卡时的温度的id，范围 36.3-36.7
-        self._temperature_id = -1
+        self._temperature_ids = []
         # 对应打卡时需要下拉选择的id
         self._options_ids = []
         # 内部使用的id
@@ -54,7 +54,7 @@ class ExampleHealthReport(_Report):
                     raise Exception(self._result)
                 else:
                     f['fields'][0]['values'][0]['val'] = report_time
-            elif f['id'] == self._temperature_id:
+            elif f['id'] in self._temperature_ids:
                 # 体温
                 temperature = self._random_temperature()
                 f['fields'][0]['values'][0]['val'] = temperature
