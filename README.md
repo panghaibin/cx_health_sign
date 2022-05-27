@@ -6,17 +6,9 @@
 
 最近更新日志：
 
-[2.3.0] - 2022-04-11
+[2.3.3] - 2022-05-27
 
-适配 南京信息工程大学滨江学院（无锡学院） 健康打卡
-
-适配 河北艺术职业学院 健康打卡
-
-新增自助适配健康填报表单功能
-
-支持单用户同时填报多个表单
-
-改善 GitHub Secrets 的配置方案
+适配 泉州职业技术大学 健康打卡
 
 ......
 
@@ -49,6 +41,7 @@
 | qcuwh | 武汉晴川学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e) |
 | hebart | 河北艺术职业学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=886&enc=c8f7d4f5599544933f7c222b6b44e5c4) |
 | cwxu | 南京信息工程大学滨江学院（无锡学院） 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=3449&enc=627c625902a1fd27de56172186a3f903) |
+| qvtu | 泉州职业技术大学 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=200487&enc=b69dd988598ff61b4366fdb1f1962114) |
 
 如果你的学校不在本项目支持列表之内，你可以：
 - 自己抓包学习通的表单链接得到 `form id` 和 `enc` ，然后即可自助适配，详细步骤见 [学习通健康打卡表单自适配指北](https://hbte.ch/1968.html) 。适配好并测试通过后，即可向本项目 `Pull Request` 。
