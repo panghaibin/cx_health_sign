@@ -20,6 +20,7 @@ from config.xnec import XNECHealthReport
 from config.qcuwh import QCUWHHealthReport
 from config.hebart import HEBARTHealthReport
 from config.cwxu import CWXUHealthReport
+from config.QVTU import QVTUHealthReport
 from config.test import TestReport
 
 
@@ -44,6 +45,7 @@ class MainHandle(object):
             'qcuwh': QCUWHHealthReport,
             'hebart': HEBARTHealthReport,
             'cwxu': CWXUHealthReport,
+            'QVTU':QVTUHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
