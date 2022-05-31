@@ -202,7 +202,7 @@
 | :---: | :---: | :---: |
 | 1 | Server酱 | https://sct.ftqq.com/ |
 | 2 | 推送加 | https://www.pushplus.plus/ |
-| 3 | 推送加（hxtrip域名下） | https://pushplus.hxtrip.com/ |
+| 3 | ~~推送加（hxtrip域名下）~~ | ~~https://pushplus.hxtrip.com/~~ 该服务已下线 |
 
 请前往任意官网注册得到`key`后即可在本项目中使用，在 GitHub Actions 中使用时注意接口代号正确设置。
 
