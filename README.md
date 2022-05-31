@@ -160,7 +160,7 @@
     根据提示操作，设置后所有用户的填报结果都会推送到对应接口
 
 
-以上两步也可通过直接创建 `setting.yaml` 文件以保存配置，格式参考 `setting.bak.yal` 。
+以上两步也可通过直接创建 `setting.yaml` 文件以保存配置，格式参考 `setting.bak.yaml` 。
 
 4. 执行程序
     ```shell
