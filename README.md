@@ -42,6 +42,7 @@
 | hebart | 河北艺术职业学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=886&enc=c8f7d4f5599544933f7c222b6b44e5c4) |
 | cwxu | 南京信息工程大学滨江学院（无锡学院） 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=3449&enc=627c625902a1fd27de56172186a3f903) |
 | qvtu | 泉州职业技术大学 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=200487&enc=b69dd988598ff61b4366fdb1f1962114) |
+| hebau | 河北农业大学 健康上报 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=204160&enc=a9b79f8b76307cd50a458b843d219ff2) |
 
 如果你的学校不在本项目支持列表之内，你可以：
 - 自己抓包学习通的表单链接得到 `form id` 和 `enc` ，然后即可自助适配，详细步骤见 [学习通健康打卡表单自适配指北](https://hbte.ch/1968.html) 。适配好并测试通过后，即可向本项目 `Pull Request` 。

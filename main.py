@@ -21,6 +21,7 @@ from config.qcuwh import QCUWHHealthReport
 from config.hebart import HEBARTHealthReport
 from config.cwxu import CWXUHealthReport
 from config.qvtu import QVTUHealthReport
+from config.hebau import HEBAUHealthReport
 from config.test import TestReport
 
 
@@ -46,6 +47,7 @@ class MainHandle(object):
             'hebart': HEBARTHealthReport,
             'cwxu': CWXUHealthReport,
             'qvtu': QVTUHealthReport,
+            'hebau': HEBAUHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
