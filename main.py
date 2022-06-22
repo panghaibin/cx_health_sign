@@ -23,6 +23,7 @@ from config.cwxu import CWXUHealthReport
 from config.qvtu import QVTUHealthReport
 from config.hebau import HEBAUHealthReport
 from config.test import TestReport
+from config.tust import TUSTHealthReport
 
 
 class MainHandle(object):
@@ -48,6 +49,7 @@ class MainHandle(object):
             'cwxu': CWXUHealthReport,
             'qvtu': QVTUHealthReport,
             'hebau': HEBAUHealthReport,
+            'tust': TUSTHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
