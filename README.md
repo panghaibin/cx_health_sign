@@ -6,13 +6,13 @@
 
 最近更新日志：
 
-[2.3.6] - 2022-06-22
+[2.3.7] - 2022-07-20
+
+适配 咸宁职业技术学院 健康打卡-2
 
 适配 天津科技大学 本科健康打卡
 
 适配 河北农业大学 健康上报
-
-适配 泉州职业技术大学 健康打卡
 
 ......
 
@@ -42,6 +42,7 @@
 | swut_2 | 山东外国语职业技术大学 午检打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=175235&enc=fb50b811a71a357bbb3a87424f7c074c) |
 | hnisc | 湖南信息学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=158324&enc=b08ae0de35d833ebc04ad7c5604f1b43) |
 | xnec | 咸宁职业技术学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100992&enc=bd1883314d3b5f4b36c91dc1907b5c74) |
+| xnec_2 | 咸宁职业技术学院 健康打卡-2 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100244&enc=c30d59556090a358fc0fb4992dd65cc1) |
 | qcuwh | 武汉晴川学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e) |
 | hebart | 河北艺术职业学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=886&enc=c8f7d4f5599544933f7c222b6b44e5c4) |
 | cwxu | 南京信息工程大学滨江学院（无锡学院） 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=3449&enc=627c625902a1fd27de56172186a3f903) |

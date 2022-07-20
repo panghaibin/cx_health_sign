@@ -24,6 +24,7 @@ from config.qvtu import QVTUHealthReport
 from config.hebau import HEBAUHealthReport
 from config.test import TestReport
 from config.tust import TUSTHealthReport
+from config.xnec_2 import XNECHealthReport2
 
 
 class MainHandle(object):
@@ -50,6 +51,7 @@ class MainHandle(object):
             'qvtu': QVTUHealthReport,
             'hebau': HEBAUHealthReport,
             'tust': TUSTHealthReport,
+            'xnec_2': XNECHealthReport2,
         }
 
         # 健康上报结果，多用户存储在一个数组
