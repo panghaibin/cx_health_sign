@@ -54,11 +54,11 @@ class ExampleHealthReport(_Report):
                     raise Exception(self._result)
                 else:
                     f['fields'][0]['values'][0]['val'] = report_time
-            elif f['id'] in self._temperature_ids:
+            elif f['id'] in self._temperature_ids and f['id'] not in self._options_ids:
                 # 体温
                 temperature = self._random_temperature()
                 f['fields'][0]['values'][0]['val'] = temperature
-            elif f['id'] in self._options_ids:
+            elif f['id'] in self._options_ids and f['id'] not in self._isShow_ids:
                 # 下拉项选择改写为 true
                 for option in f['fields'][0]['options']:
                     if f['fields'][0]['values'][0]['val'] == option['title']:
