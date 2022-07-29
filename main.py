@@ -25,6 +25,7 @@ from config.hebau import HEBAUHealthReport
 from config.test import TestReport
 from config.tust import TUSTHealthReport
 from config.xnec_2 import XNECHealthReport2
+from config.wut import WUTHealthReport
 
 
 class MainHandle(object):
@@ -52,6 +53,7 @@ class MainHandle(object):
             'hebau': HEBAUHealthReport,
             'tust': TUSTHealthReport,
             'xnec_2': XNECHealthReport2,
+            'wut': WUTHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
