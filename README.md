@@ -6,13 +6,13 @@
 
 最近更新日志：
 
-[2.3.7] - 2022-07-20
+[2.3.8] - 2022-07-30
+
+适配 武昌理工学院 健康打卡
 
 适配 咸宁职业技术学院 健康打卡-2
 
 适配 天津科技大学 本科健康打卡
-
-适配 河北农业大学 健康上报
 
 ......
 
@@ -49,6 +49,7 @@
 | qvtu | 泉州职业技术大学 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=200487&enc=b69dd988598ff61b4366fdb1f1962114) |
 | hebau | 河北农业大学 健康上报 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=204160&enc=a9b79f8b76307cd50a458b843d219ff2) |
 | tust | 天津科技大学 本科健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=14673&enc=ed9e03b2050df7f56003dc0c0fa226d2) |
+| wut | 武昌理工学院 本科健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=89398&enc=75244f75384287c902e57b080c4d1c6d) |
 
 如果你的学校不在本项目支持列表之内，你可以：
 - 自己抓包学习通的表单链接得到 `form id` 和 `enc` ，然后即可自助适配，详细步骤见 [学习通健康打卡表单自适配指北](https://hbte.ch/1968.html) 。适配好并测试通过后，即可向本项目 `Pull Request` 。
