@@ -26,6 +26,7 @@ from config.test import TestReport
 from config.tust import TUSTHealthReport
 from config.xnec_2 import XNECHealthReport2
 from config.wut import WUTHealthReport
+from config.whsw import WHSWHealthReport
 
 
 class MainHandle(object):
@@ -54,6 +55,7 @@ class MainHandle(object):
             'tust': TUSTHealthReport,
             'xnec_2': XNECHealthReport2,
             'wut': WUTHealthReport,
+            'whsw': WHSWHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
