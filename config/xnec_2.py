@@ -15,7 +15,7 @@ class XNECHealthReport2(_Report):
         self._day_id = 59
         self._report_time_id = -1
         self._temperature_ids = [58]
-        self._options_ids = [47, 60, 8, 45, 11, 13, 15, 56, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 38]
+        self._options_ids = [60, 8, 45, 11, 13, 15, 56, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 38]
         self._hasAuthority_ids = [1, 49, 51, 52, 53, 46, 7, 37]
         self._isShow_ids = [10, 12, 14, 56, 57, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 39, 41, 42, 43]
 
