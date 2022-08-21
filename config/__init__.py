@@ -106,6 +106,8 @@ class _Report(object):
         for f in form_data:
             f.update(d)
         self._last_form_data = form_data
+        # with open('last_form_data.json', 'w', encoding='utf8') as f:
+        #     json.dump(self._last_form_data, f, ensure_ascii=False, indent=2)
         return self._last_form_data
 
     def _clean_form_data(self):

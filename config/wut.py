@@ -13,11 +13,11 @@ class WUTHealthReport(_Report):
         self._reporter_name = 'WUT健康打卡'
 
         self._day_id = 38
-        self._report_time_id = 18
+        self._report_time_id = -1
         self._temperature_ids = []
         self._options_ids = [12, 13, 14, 15, 16, 17, 19, 20, 22, 24, 26, 28, 30, 33, 36]
         self._hasAuthority_ids = [38]
-        self._isShow_ids = [21, 23, 25, 27, 32, 29, 34, 35, 36, 37]
+        self._isShow_ids = [21, 23, 25, 27, 32, 29, 34, 35, 36, 37, 17, 18]
 
     def _clean_form_data(self):
         form_data = self._last_form_data
@@ -25,22 +25,7 @@ class WUTHealthReport(_Report):
             if f['id'] == self._day_id:
                 # 打卡日期
                 today = self._t.today
-                if f['fields'][0]['values'][0]['val'] == today:
-                    # 如果获取到上次的打卡时间是今天的，则不需要再次填报
-                    self._result = '%s今日%s已填报过%s' % (self._username_masked, today, self._reporter_name)
-                    raise Exception(self._result)
-                else:
-                    f['fields'][0]['values'][0]['val'] = today
-            elif f['id'] == self._report_time_id:
-                # 打卡时间
-                today = self._t.today
-                report_time = self._t.report_time
-                if f['fields'][0]['values'][0]['val'].startswith(today):
-                    # 同上
-                    self._result = '%s今日%s已填报过%s' % (self._username_masked, today, self._reporter_name)
-                    raise Exception(self._result)
-                else:
-                    f['fields'][0]['values'][0]['val'] = report_time
+                f['fields'][0]['values'][0]['val'] = today
             elif f['id'] in self._temperature_ids and f['id'] not in self._options_ids:
                 # 体温
                 temperature = self._random_temperature()
