@@ -6,6 +6,7 @@ class TUSTHealthReport(_Report):
     """
     TUST本科打卡
     """
+
     def __init__(self, username, password, school_id=''):
         _Report.__init__(self, username, password, school_id)
         self._form_id = '14673'
@@ -15,9 +16,9 @@ class TUSTHealthReport(_Report):
         self._day_id = 35
         self._report_time_id = -1
         self._temperature_ids = [53, 54, 55]
-        self._options_ids = [27, 37, 50, 52, 51, 40, 42, 30, 8, 33, 45]
+        self._options_ids = [27, 37, 50, 52, 58]
         self._hasAuthority_ids = [28, 49]
-        self._isShow_ids = [58, 60, 59, 64, 41, 43, 10, 34, 46]
+        self._isShow_ids = [58, 60, 59, 64, 41, 43, 10, 34, 46, 51, 40, 42, 30, 8, 33, 45, 38, 44]
 
     def _clean_form_data(self):
         form_data = self._last_form_data
