@@ -16,9 +16,9 @@ class QVTUHealthReport(_Report):
         self._day_id = 73
         self._report_time_id = -1
         self._temperature_ids = []
-        self._options_ids = [92, 8, 62, 90, 11, 13, 70, 68, 93, 55]
-        self._hasAuthority_ids = [89, 95, 1]
-        self._isShow_ids = [61, 64, 63, 66, 67, 71, 69]
+        self._options_ids = [90, 92, 68, 8, 62, 104, 11, 13, 70, 98, 93, 55]
+        self._hasAuthority_ids = [101, 99, 89, 100, 95]
+        self._isShow_ids = [103, 61, 105, 64, 63, 66, 67, 71, 69, 106, 108, 109]
 
     def _clean_form_data(self):
         form_data = self._last_form_data
