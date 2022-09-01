@@ -121,7 +121,14 @@ class GitHub(object):
         _new_users = []
         for new_user_info_raw in self._new_users_raw:
             # un=123,pw=456,pt=test,si=789,at=1,ak=5;......
-            key_map = {'un': 'username', 'pw': 'password', 'pt': 'post_type', 'si': 'school_id', 'at': 'api_type'}
+            key_map = {
+                'un': 'username',
+                'pw': 'password',
+                'pt': 'post_type',
+                'si': 'school_id',
+                'at': 'api_type',
+                'ak': 'api_key'
+            }
             new_user_info = new_user_info_raw.split(',')
             new_user = {}
             for new_user_info_item in new_user_info:

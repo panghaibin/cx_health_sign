@@ -117,7 +117,7 @@
 
     > 在旧版本（1.4.0及以前）中采用的`Name`值为`SEND`，格式也难以阅读。现在的版本`Name`为`NEWSEND`，并采用如下的便于阅读的设置方案，旧的方案仍然兼容。
 
-    格式为`ai=api_type,ak=api_key`，例如
+    格式为`at=api_type,ak=api_key`，例如
 
     ```
     at=2,ak=xxxx
