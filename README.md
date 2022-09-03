@@ -41,8 +41,10 @@
 | swut | 山东外国语职业技术大学 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=139669&enc=d3fd2b1818f116a76aff41eee80ea348) |
 | swut_2 | 山东外国语职业技术大学 午检打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=175235&enc=fb50b811a71a357bbb3a87424f7c074c) |
 | hnisc | 湖南信息学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=158324&enc=b08ae0de35d833ebc04ad7c5604f1b43) |
-| xnec | 咸宁职业技术学院 健康打卡 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100992&enc=bd1883314d3b5f4b36c91dc1907b5c74) |
+| xnec | 咸宁职业技术学院 学生晚检 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100992&enc=bd1883314d3b5f4b36c91dc1907b5c74) |
 | xnec_2 | 咸宁职业技术学院 健康打卡-2 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100244&enc=c30d59556090a358fc0fb4992dd65cc1) |
+| xnec_3 | 咸宁职业技术学院 学生早检 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100991&enc=67526ccf3ba6333c15c2a99a5b21682e) |
+| xnec_4 | 咸宁职业技术学院 学生午检 | [表单主页](https://office.chaoxing.com/front/web/apps/forms/fore/apply?id=100989&enc=d854f35d6eb6ee0a700243ac1a4db86b) |
 | qcuwh | 武汉晴川学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=7185&enc=f837c93e0de9d9ad82db707b2c27241e) |
 | hebart | 河北艺术职业学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=886&enc=c8f7d4f5599544933f7c222b6b44e5c4) |
 | cwxu | 南京信息工程大学滨江学院（无锡学院） 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=3449&enc=627c625902a1fd27de56172186a3f903) |

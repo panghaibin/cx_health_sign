@@ -17,6 +17,9 @@ from config.swut import SWUTHealthReport
 from config.swut_2 import SWUTHealthReportNoon
 from config.hnisc import HNISCHealthReport
 from config.xnec import XNECHealthReport
+from config.xnec_2 import XNECHealthReport2
+from config.xnec_3 import XNECHealthReport3
+from config.xnec_4 import XNECHealthReport4
 from config.qcuwh import QCUWHHealthReport
 from config.hebart import HEBARTHealthReport
 from config.cwxu import CWXUHealthReport
@@ -24,7 +27,6 @@ from config.qvtu import QVTUHealthReport
 from config.hebau import HEBAUHealthReport
 from config.test import TestReport
 from config.tust import TUSTHealthReport
-from config.xnec_2 import XNECHealthReport2
 from config.wut import WUTHealthReport
 from config.whsw import WHSWHealthReport
 
@@ -47,13 +49,15 @@ class MainHandle(object):
             'swut_2': SWUTHealthReportNoon,
             'hnisc': HNISCHealthReport,
             'xnec': XNECHealthReport,
+            'xnec_2': XNECHealthReport2,
+            'xnec_3': XNECHealthReport3,
+            'xnec_4': XNECHealthReport4,
             'qcuwh': QCUWHHealthReport,
             'hebart': HEBARTHealthReport,
             'cwxu': CWXUHealthReport,
             'qvtu': QVTUHealthReport,
             'hebau': HEBAUHealthReport,
             'tust': TUSTHealthReport,
-            'xnec_2': XNECHealthReport2,
             'wut': WUTHealthReport,
             'whsw': WHSWHealthReport,
         }
