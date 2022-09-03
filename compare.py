@@ -53,7 +53,7 @@ class Compare:
             except KeyError:
                 pass
             try:
-                if 'yyyy-MM-dd HH:mm' == p_item['fields'][0]['fieldType']['format']:
+                if p_item['fields'][0]['fieldType']['format'] in ['yyyy-MM-dd HH:mm', 'yyyy-MM-dd+HH:mm']:
                     report_time_id = p_item['id']
             except KeyError:
                 pass
