@@ -6,13 +6,13 @@
 
 最近更新日志：
 
-[2.3.9] - 2022-08-10
+[2.4.3] - 2022-09-21
 
-适配 武汉生物工程学院 健康打卡
+适配 山东理工职业学院 健康打卡
 
-适配 武昌理工学院 健康打卡
+适配 咸阳职业技术学院 早午晚检
 
-适配 咸宁职业技术学院 健康打卡-2
+修复 GitHub Actions 单用户消息推送不生效的 bug
 
 ......
 
@@ -53,6 +53,7 @@
 | tust | 天津科技大学 本科健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=14673&enc=ed9e03b2050df7f56003dc0c0fa226d2) |
 | wut | 武昌理工学院 本科健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=89398&enc=75244f75384287c902e57b080c4d1c6d) |
 | whsw | 武汉生物工程学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=174267&enc=2ea539d84f23c7852a021ed77008df9f) |
+| sdpu | 山东理工职业学院 健康打卡 | [表单主页](http://office.chaoxing.com/front/web/apps/forms/fore/apply?id=211393&enc=4e585485d0b21ac1b15b6701b7c01f49) |
 
 如果你的学校不在本项目支持列表之内，你可以：
 - 自己抓包学习通的表单链接得到 `form id` 和 `enc` ，然后即可自助适配，详细步骤见 [学习通健康打卡表单自适配指北](https://hbte.ch/1968.html) 。适配好并测试通过后，即可向本项目 `Pull Request` 。

@@ -29,6 +29,7 @@ from config.test import TestReport
 from config.tust import TUSTHealthReport
 from config.wut import WUTHealthReport
 from config.whsw import WHSWHealthReport
+from config.sdpu import SDPUHealthReport
 
 
 class MainHandle(object):
@@ -60,6 +61,7 @@ class MainHandle(object):
             'tust': TUSTHealthReport,
             'wut': WUTHealthReport,
             'whsw': WHSWHealthReport,
+            'sdpu': SDPUHealthReport,
         }
 
         # 健康上报结果，多用户存储在一个数组
