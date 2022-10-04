@@ -14,7 +14,7 @@ users:
 #  用户名（作为键值），必填 手机号/邮箱/学号（需提供 学校 id ）均可
   "username_1":
 #    密码，必填
-    passwprd: "password_here"
+    password: "password_here"
 #    此处填写需要报送的配置类型，必填 可选值参见 README.md
 #    如果需要报送多个类型，则用 | 分隔，如： swut|swut_2
     post_type: "default"
@@ -26,7 +26,7 @@ users:
 
 #  多用户采用相同的配置方法
   "username_2":
-    passwprd: "password_here"
+    password: "password_here"
     school_id: ''
     post_type: "nnnu"
     api_id: 1
