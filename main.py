@@ -32,6 +32,9 @@ from config.whsw import WHSWHealthReport
 from config.sdpu import SDPUHealthReport
 
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
 class MainHandle(object):
     """
     主函数
@@ -83,11 +86,11 @@ class MainHandle(object):
             sleep_time = random.randint(30, 360)
         else:
             sleep_time = int(os_sleep)
-        print('休眠 {}s'.format(sleep_time))
+        logging.info('休眠 {}s'.format(sleep_time))
         for i in range(sleep_time, 0, -10):
-            print("休眠剩余%s秒" % i)
+            logging.info("休眠剩余%s秒" % i)
             sleep(10 if i > 10 else i)
-        print("休眠结束")
+        logging.info("休眠结束")
 
     def main(self):
         setting = Setting()
@@ -96,21 +99,21 @@ class MainHandle(object):
         self._global_api = setting.global_api
 
         if self.users_num == 0:
-            print('用户数量为0，开始添加用户')
+            logging.info('用户数量为0，开始添加用户')
             self.add_user()
-            print('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
-            print('开始填报测试')
+            logging.info('可执行 `python main.py add` 或修改 setting.yaml 文件继续添加')
+            logging.info('开始填报测试')
         # 填报全部用户
         self.report_all()
         # 发送全局消息
         self.global_send()
 
         # 打印每个用户健康报告填报结果
-        print(self.report_results)
+        logging.info(self.report_results)
         # 打印每个用户的消息发送结果
-        print(self.send_results)
+        logging.info(self.send_results)
         # 打印全局消息发送结果
-        print(self.global_send_result)
+        logging.info(self.global_send_result)
 
     def report_all(self):
         for user in self._users:
@@ -259,11 +262,11 @@ class GitHubHandle(MainHandle):
         self.global_send()
 
         # 打印每个用户健康报告填报结果
-        print(self.report_results)
+        logging.info(self.report_results)
         # 打印每个用户的消息发送结果
-        print(self.send_results)
+        logging.info(self.send_results)
         # 打印全局消息发送结果
-        print(self.global_send_result)
+        logging.info(self.global_send_result)
 
     def add_user(self) -> bool:
         return False
@@ -360,8 +363,12 @@ class SendMsg(object):
         return False
 
     def send_msg(self) -> bool:
-        result_bool = self._send_api[self.api_type]()
-        self.send_result_bool = result_bool
+        try:
+            result_bool = self._send_api[self.api_type]()
+            self.send_result_bool = result_bool
+        except Exception as e:
+            logging.exception(e)
+            self.send_result_bool = False
         return self.send_result_bool
 
 
