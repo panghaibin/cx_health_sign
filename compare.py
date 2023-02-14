@@ -48,7 +48,9 @@ class Compare:
             except KeyError:
                 pass
             try:
-                if 'yyyy-MM-dd' == p_item['fields'][0]['fieldType']['format']:
+                # if 'yyyy-MM-dd' == p_item['fields'][0]['fieldType']['format']:
+                # 表单中有多个'yyyy-MM-dd'格式的日期,建议改为匹配"打卡时间"label
+                if '打卡时间' in p_item['fields'][0]['label']:
                     day_id = p_item['id']
             except KeyError:
                 pass
@@ -57,6 +59,11 @@ class Compare:
                     report_time_id = p_item['id']
             except KeyError:
                 pass
+
+        # 部分情况下有isShow_ids存在于options_ids,计算出相同项,在options_ids中剔除
+        same_ids = list(set(isShow_ids) & set(options_ids))
+        for i in same_ids:
+            options_ids.remove(i)
 
         print('# 变量值为 -1 或者 [] 的表示没有找到对应的id，若确认表单中没有这些变量，则不影响使用')
         print('self._day_id =', day_id)
